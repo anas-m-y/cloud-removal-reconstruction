@@ -1,0 +1,1201 @@
+{
+ "samples": [
+  {
+   "id": "sp-00",
+   "src": "sp",
+   "source": "Sentinel-2 (SEN12MS-CR spring)",
+   "sensor": "Sentinel-2",
+   "key": "66_351",
+   "scene": "66",
+   "rank_quantile": 0.05,
+   "cloud_fraction": 0.398,
+   "has_mask": false,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 21.259321289082493,
+     "ssim": 0.8510430455207825
+    },
+    "v5b": {
+     "psnr": 14.608084104846773,
+     "ssim": 0.7372561097145081
+    },
+    "v6": {
+     "psnr": 22.352013312173913,
+     "ssim": 0.8440802693367004
+    },
+    "v6_nosar": {
+     "psnr": 24.81996681962539,
+     "ssim": 0.8888304829597473
+    },
+    "v6_wrongflag": {
+     "psnr": 22.280978437326446,
+     "ssim": 0.8768394589424133
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 24.920314585012576,
+     "ssim": 0.9011374115943909
+    }
+   },
+   "uncertainty_mean": 0.0039895074442029
+  },
+  {
+   "id": "sp-01",
+   "src": "sp",
+   "source": "Sentinel-2 (SEN12MS-CR spring)",
+   "sensor": "Sentinel-2",
+   "key": "66_438",
+   "scene": "66",
+   "rank_quantile": 0.48,
+   "cloud_fraction": 0.696,
+   "has_mask": false,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 17.010118326167287,
+     "ssim": 0.7507023811340332
+    },
+    "v5b": {
+     "psnr": 14.391684698952137,
+     "ssim": 0.6786486506462097
+    },
+    "v6": {
+     "psnr": 23.089597819764847,
+     "ssim": 0.8268516063690186
+    },
+    "v6_nosar": {
+     "psnr": 24.45500864978912,
+     "ssim": 0.9123315215110779
+    },
+    "v6_wrongflag": {
+     "psnr": 22.877723454498526,
+     "ssim": 0.8687142729759216
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 23.877218524529873,
+     "ssim": 0.8959386944770813
+    }
+   },
+   "uncertainty_mean": 0.005904979072511196
+  },
+  {
+   "id": "sp-02",
+   "src": "sp",
+   "source": "Sentinel-2 (SEN12MS-CR spring)",
+   "sensor": "Sentinel-2",
+   "key": "66_397",
+   "scene": "66",
+   "rank_quantile": 0.95,
+   "cloud_fraction": 0.836,
+   "has_mask": false,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 16.102117436409344,
+     "ssim": 0.7780202031135559
+    },
+    "v5b": {
+     "psnr": 14.853604391712562,
+     "ssim": 0.7396030426025391
+    },
+    "v6": {
+     "psnr": 27.70628163934895,
+     "ssim": 0.8804464340209961
+    },
+    "v6_nosar": {
+     "psnr": 30.83744264179764,
+     "ssim": 0.8996689915657043
+    },
+    "v6_wrongflag": {
+     "psnr": 28.24411052528216,
+     "ssim": 0.9010332226753235
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 30.977013489693057,
+     "ssim": 0.8966584205627441
+    }
+   },
+   "uncertainty_mean": 0.003448356641456485
+  },
+  {
+   "id": "sp-03",
+   "src": "sp",
+   "source": "Sentinel-2 (SEN12MS-CR spring)",
+   "sensor": "Sentinel-2",
+   "key": "75_125",
+   "scene": "75",
+   "rank_quantile": 0.07,
+   "cloud_fraction": 0.751,
+   "has_mask": false,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 12.293703500378175,
+     "ssim": 0.3235291540622711
+    },
+    "v5b": {
+     "psnr": 33.42769279260894,
+     "ssim": 0.8809484839439392
+    },
+    "v6": {
+     "psnr": 31.752488008967635,
+     "ssim": 0.8621688485145569
+    },
+    "v6_nosar": {
+     "psnr": 29.139895909077698,
+     "ssim": 0.8521298766136169
+    },
+    "v6_wrongflag": {
+     "psnr": 31.686067979210083,
+     "ssim": 0.8740549087524414
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 27.58082488369662,
+     "ssim": 0.8386066555976868
+    }
+   },
+   "uncertainty_mean": 0.0038807441014796495
+  },
+  {
+   "id": "sp-04",
+   "src": "sp",
+   "source": "Sentinel-2 (SEN12MS-CR spring)",
+   "sensor": "Sentinel-2",
+   "key": "75_839",
+   "scene": "75",
+   "rank_quantile": 0.5,
+   "cloud_fraction": 0.383,
+   "has_mask": false,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 14.007064589843667,
+     "ssim": 0.5736566185951233
+    },
+    "v5b": {
+     "psnr": 40.7471044724197,
+     "ssim": 0.9762463569641113
+    },
+    "v6": {
+     "psnr": 42.341106280131314,
+     "ssim": 0.9770084023475647
+    },
+    "v6_nosar": {
+     "psnr": 40.284179247320964,
+     "ssim": 0.9741602540016174
+    },
+    "v6_wrongflag": {
+     "psnr": 35.36357836602622,
+     "ssim": 0.9665313363075256
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 32.94932763512604,
+     "ssim": 0.9528687000274658
+    }
+   },
+   "uncertainty_mean": 0.0011541738640516996
+  },
+  {
+   "id": "sp-05",
+   "src": "sp",
+   "source": "Sentinel-2 (SEN12MS-CR spring)",
+   "sensor": "Sentinel-2",
+   "key": "75_826",
+   "scene": "75",
+   "rank_quantile": 0.93,
+   "cloud_fraction": 0.653,
+   "has_mask": false,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 7.8544777016638045,
+     "ssim": 0.3882174491882324
+    },
+    "v5b": {
+     "psnr": 36.16940297786576,
+     "ssim": 0.9490724205970764
+    },
+    "v6": {
+     "psnr": 41.522360328413946,
+     "ssim": 0.9703332781791687
+    },
+    "v6_nosar": {
+     "psnr": 39.175634564961655,
+     "ssim": 0.9581963419914246
+    },
+    "v6_wrongflag": {
+     "psnr": 34.58489705840477,
+     "ssim": 0.9517995715141296
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 30.682140469405915,
+     "ssim": 0.9210559725761414
+    }
+   },
+   "uncertainty_mean": 0.001609652303159237
+  },
+  {
+   "id": "sp-06",
+   "src": "sp",
+   "source": "Sentinel-2 (SEN12MS-CR spring)",
+   "sensor": "Sentinel-2",
+   "key": "77_593",
+   "scene": "77",
+   "rank_quantile": 0.06,
+   "cloud_fraction": 0.175,
+   "has_mask": false,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 17.7975229553524,
+     "ssim": 0.6624771952629089
+    },
+    "v5b": {
+     "psnr": 22.490748297559783,
+     "ssim": 0.7962204813957214
+    },
+    "v6": {
+     "psnr": 25.149854366511406,
+     "ssim": 0.7791334986686707
+    },
+    "v6_nosar": {
+     "psnr": 25.806491133982,
+     "ssim": 0.7742292881011963
+    },
+    "v6_wrongflag": {
+     "psnr": 25.140175134568356,
+     "ssim": 0.7851698994636536
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 26.246357351513964,
+     "ssim": 0.7948997616767883
+    }
+   },
+   "uncertainty_mean": 0.004591898061335087
+  },
+  {
+   "id": "sp-07",
+   "src": "sp",
+   "source": "Sentinel-2 (SEN12MS-CR spring)",
+   "sensor": "Sentinel-2",
+   "key": "77_684",
+   "scene": "77",
+   "rank_quantile": 0.94,
+   "cloud_fraction": 0.342,
+   "has_mask": false,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 9.473349079710706,
+     "ssim": 0.56761234998703
+    },
+    "v5b": {
+     "psnr": 23.635929947931025,
+     "ssim": 0.8374181389808655
+    },
+    "v6": {
+     "psnr": 26.406714241310976,
+     "ssim": 0.7586076259613037
+    },
+    "v6_nosar": {
+     "psnr": 26.895951208294274,
+     "ssim": 0.7490562796592712
+    },
+    "v6_wrongflag": {
+     "psnr": 26.694415289046294,
+     "ssim": 0.8165536522865295
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 26.03864548172952,
+     "ssim": 0.8081650137901306
+    }
+   },
+   "uncertainty_mean": 0.005798793863505125
+  },
+  {
+   "id": "ac-08",
+   "src": "ac",
+   "source": "Sentinel-2 (AllClear)",
+   "sensor": "Sentinel-2",
+   "key": "ac_roi717075_20220116_20220114",
+   "scene": null,
+   "rank_quantile": 0.06,
+   "cloud_fraction": 0.31,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 25.835578418279063,
+     "ssim": 0.8652437329292297,
+     "cloud_psnr": 21.590217804507972
+    },
+    "v5b": {
+     "psnr": 25.544054415371793,
+     "ssim": 0.8882892727851868,
+     "cloud_psnr": 23.927683293683675
+    },
+    "v6": {
+     "psnr": 24.72226085036749,
+     "ssim": 0.8716006278991699,
+     "cloud_psnr": 23.199443131215418
+    },
+    "v6_nosar": {
+     "psnr": 25.014228427043502,
+     "ssim": 0.8708868622779846,
+     "cloud_psnr": 24.007707132006445
+    },
+    "v6_wrongflag": {
+     "psnr": 26.494424624613586,
+     "ssim": 0.8906219601631165,
+     "cloud_psnr": 24.61170534493215
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 26.87572036901286,
+     "ssim": 0.884772777557373,
+     "cloud_psnr": 25.019225589537264
+    },
+    "v6_paste": {
+     "psnr": 27.11435911749792,
+     "ssim": 0.8734162449836731,
+     "cloud_psnr": 23.199443131215418
+    },
+    "v5b_paste": {
+     "psnr": 27.65893525285898,
+     "ssim": 0.8830356597900391,
+     "cloud_psnr": 23.927683293683675
+    }
+   },
+   "uncertainty_mean": 0.0025308250915259123
+  },
+  {
+   "id": "ac-09",
+   "src": "ac",
+   "source": "Sentinel-2 (AllClear)",
+   "sensor": "Sentinel-2",
+   "key": "ac_roi750963_20220925_20220930",
+   "scene": null,
+   "rank_quantile": 0.19,
+   "cloud_fraction": 0.685,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 20.86506192633266,
+     "ssim": 0.7265004515647888,
+     "cloud_psnr": 19.55219137234429
+    },
+    "v5b": {
+     "psnr": 27.595281928417702,
+     "ssim": 0.865895688533783,
+     "cloud_psnr": 28.57186974530782
+    },
+    "v6": {
+     "psnr": 27.201570771420513,
+     "ssim": 0.8671339154243469,
+     "cloud_psnr": 27.656217086883114
+    },
+    "v6_nosar": {
+     "psnr": 29.195999033114187,
+     "ssim": 0.8559377193450928,
+     "cloud_psnr": 29.310904785470598
+    },
+    "v6_wrongflag": {
+     "psnr": 27.66161696558603,
+     "ssim": 0.8554468750953674,
+     "cloud_psnr": 27.69555058084158
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 26.998198842579395,
+     "ssim": 0.8257785439491272,
+     "cloud_psnr": 26.690375650498922
+    },
+    "v6_paste": {
+     "psnr": 27.514541435711855,
+     "ssim": 0.8551299571990967,
+     "cloud_psnr": 27.656217086883114
+    },
+    "v5b_paste": {
+     "psnr": 28.09986366812801,
+     "ssim": 0.8543997406959534,
+     "cloud_psnr": 28.57186974530782
+    }
+   },
+   "uncertainty_mean": 0.002332556527107954
+  },
+  {
+   "id": "ac-10",
+   "src": "ac",
+   "source": "Sentinel-2 (AllClear)",
+   "sensor": "Sentinel-2",
+   "key": "ac_roi546468_20220923_20220918",
+   "scene": null,
+   "rank_quantile": 0.32,
+   "cloud_fraction": 0.695,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 18.500868176345442,
+     "ssim": 0.8203945159912109,
+     "cloud_psnr": 17.14359818601133
+    },
+    "v5b": {
+     "psnr": 26.880843433742065,
+     "ssim": 0.8902158737182617,
+     "cloud_psnr": 29.215806019879714
+    },
+    "v6": {
+     "psnr": 27.087732956935554,
+     "ssim": 0.8899344801902771,
+     "cloud_psnr": 29.50553519322795
+    },
+    "v6_nosar": {
+     "psnr": 27.667399062871993,
+     "ssim": 0.8865070939064026,
+     "cloud_psnr": 29.348009204323834
+    },
+    "v6_wrongflag": {
+     "psnr": 26.978103960361636,
+     "ssim": 0.8865863680839539,
+     "cloud_psnr": 28.91064175795806
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 27.354650521562274,
+     "ssim": 0.8649300932884216,
+     "cloud_psnr": 28.094182108100707
+    },
+    "v6_paste": {
+     "psnr": 28.284681139571042,
+     "ssim": 0.8846710324287415,
+     "cloud_psnr": 29.50553519322795
+    },
+    "v5b_paste": {
+     "psnr": 28.130245853770674,
+     "ssim": 0.8873324394226074,
+     "cloud_psnr": 29.215806019879714
+    }
+   },
+   "uncertainty_mean": 0.00226930296048522
+  },
+  {
+   "id": "ac-11",
+   "src": "ac",
+   "source": "Sentinel-2 (AllClear)",
+   "sensor": "Sentinel-2",
+   "key": "ac_roi637467_20220827_20220825",
+   "scene": null,
+   "rank_quantile": 0.45,
+   "cloud_fraction": 0.631,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 22.035216537773014,
+     "ssim": 0.8015138506889343,
+     "cloud_psnr": 21.113144726559344
+    },
+    "v5b": {
+     "psnr": 32.32181614321352,
+     "ssim": 0.9274775385856628,
+     "cloud_psnr": 31.803648259063195
+    },
+    "v6": {
+     "psnr": 32.99171512224771,
+     "ssim": 0.9321238398551941,
+     "cloud_psnr": 32.21421761497357
+    },
+    "v6_nosar": {
+     "psnr": 34.996054927772576,
+     "ssim": 0.9389276504516602,
+     "cloud_psnr": 35.13127948669835
+    },
+    "v6_wrongflag": {
+     "psnr": 29.858467986977605,
+     "ssim": 0.9101483225822449,
+     "cloud_psnr": 28.570906246384126
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 30.995716396547305,
+     "ssim": 0.9051089882850647,
+     "cloud_psnr": 30.019488264975838
+    },
+    "v6_paste": {
+     "psnr": 27.55870134125427,
+     "ssim": 0.8329877853393555,
+     "cloud_psnr": 32.21421761497357
+    },
+    "v5b_paste": {
+     "psnr": 27.466670779430462,
+     "ssim": 0.8468258380889893,
+     "cloud_psnr": 31.803648259063195
+    }
+   },
+   "uncertainty_mean": 0.0022585061378777027
+  },
+  {
+   "id": "ac-12",
+   "src": "ac",
+   "source": "Sentinel-2 (AllClear)",
+   "sensor": "Sentinel-2",
+   "key": "ac_roi21514_20220109_20220104",
+   "scene": null,
+   "rank_quantile": 0.55,
+   "cloud_fraction": 0.388,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 15.513429047261438,
+     "ssim": 0.7000927925109863,
+     "cloud_psnr": 11.622992040322252
+    },
+    "v5b": {
+     "psnr": 23.348642046252635,
+     "ssim": 0.7991105914115906,
+     "cloud_psnr": 24.047013644411287
+    },
+    "v6": {
+     "psnr": 28.33543877610286,
+     "ssim": 0.8099259734153748,
+     "cloud_psnr": 27.712689653045317
+    },
+    "v6_nosar": {
+     "psnr": 28.20103678061479,
+     "ssim": 0.8120818138122559,
+     "cloud_psnr": 27.633976459544627
+    },
+    "v6_wrongflag": {
+     "psnr": 27.41392336424072,
+     "ssim": 0.8092605471611023,
+     "cloud_psnr": 26.520352624053256
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 27.270897384044623,
+     "ssim": 0.8050824999809265,
+     "cloud_psnr": 25.99943850310719
+    },
+    "v6_paste": {
+     "psnr": 26.88156396944438,
+     "ssim": 0.8174731135368347,
+     "cloud_psnr": 27.712689653045317
+    },
+    "v5b_paste": {
+     "psnr": 25.343908518321015,
+     "ssim": 0.818079948425293,
+     "cloud_psnr": 24.047013644411287
+    }
+   },
+   "uncertainty_mean": 0.004297374282032251
+  },
+  {
+   "id": "ac-13",
+   "src": "ac",
+   "source": "Sentinel-2 (AllClear)",
+   "sensor": "Sentinel-2",
+   "key": "ac_roi222872_20220821_20220816",
+   "scene": null,
+   "rank_quantile": 0.68,
+   "cloud_fraction": 0.748,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 11.467094371567693,
+     "ssim": 0.5349509119987488,
+     "cloud_psnr": 10.258215745562726
+    },
+    "v5b": {
+     "psnr": 26.77528124205045,
+     "ssim": 0.7745609879493713,
+     "cloud_psnr": 26.64019743246614
+    },
+    "v6": {
+     "psnr": 26.46048300788212,
+     "ssim": 0.7206414341926575,
+     "cloud_psnr": 25.92805851022859
+    },
+    "v6_nosar": {
+     "psnr": 27.440453530064268,
+     "ssim": 0.7407264709472656,
+     "cloud_psnr": 27.08328990708475
+    },
+    "v6_wrongflag": {
+     "psnr": 27.440770541220452,
+     "ssim": 0.7442237734794617,
+     "cloud_psnr": 27.036489605592152
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 27.05840634256448,
+     "ssim": 0.7430171966552734,
+     "cloud_psnr": 27.063701327154813
+    },
+    "v6_paste": {
+     "psnr": 25.567554991505933,
+     "ssim": 0.6956011652946472,
+     "cloud_psnr": 25.92805851022859
+    },
+    "v5b_paste": {
+     "psnr": 26.044927040928755,
+     "ssim": 0.7421404719352722,
+     "cloud_psnr": 26.64019743246614
+    }
+   },
+   "uncertainty_mean": 0.005760119296610355
+  },
+  {
+   "id": "ac-14",
+   "src": "ac",
+   "source": "Sentinel-2 (AllClear)",
+   "sensor": "Sentinel-2",
+   "key": "ac_roi750963_20220712_20220717",
+   "scene": null,
+   "rank_quantile": 0.81,
+   "cloud_fraction": 0.222,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 17.474818686380527,
+     "ssim": 0.8268451690673828,
+     "cloud_psnr": 11.079409000386873
+    },
+    "v5b": {
+     "psnr": 33.91666420738785,
+     "ssim": 0.9216938614845276,
+     "cloud_psnr": 32.268723919269334
+    },
+    "v6": {
+     "psnr": 34.68569076968543,
+     "ssim": 0.9259631037712097,
+     "cloud_psnr": 31.405134716933517
+    },
+    "v6_nosar": {
+     "psnr": 31.465221027968965,
+     "ssim": 0.9027044773101807,
+     "cloud_psnr": 28.54436616045497
+    },
+    "v6_wrongflag": {
+     "psnr": 33.4334843900517,
+     "ssim": 0.9145548939704895,
+     "cloud_psnr": 29.650444209344407
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 30.634645999404224,
+     "ssim": 0.8932695388793945,
+     "cloud_psnr": 26.402094754784578
+    },
+    "v6_paste": {
+     "psnr": 31.459635940718652,
+     "ssim": 0.9189890027046204,
+     "cloud_psnr": 31.405134716933517
+    },
+    "v5b_paste": {
+     "psnr": 31.639547263983737,
+     "ssim": 0.9192593097686768,
+     "cloud_psnr": 32.268723919269334
+    }
+   },
+   "uncertainty_mean": 0.0027567094657570124
+  },
+  {
+   "id": "ac-15",
+   "src": "ac",
+   "source": "Sentinel-2 (AllClear)",
+   "sensor": "Sentinel-2",
+   "key": "ac_roi22679_20220313_20220308",
+   "scene": null,
+   "rank_quantile": 0.94,
+   "cloud_fraction": 0.676,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 19.411385436243954,
+     "ssim": 0.8405740857124329,
+     "cloud_psnr": 17.86997121322166
+    },
+    "v5b": {
+     "psnr": 36.88907773482451,
+     "ssim": 0.9672799110412598,
+     "cloud_psnr": 36.83762157874857
+    },
+    "v6": {
+     "psnr": 38.65987387599396,
+     "ssim": 0.9572585225105286,
+     "cloud_psnr": 38.75547556207004
+    },
+    "v6_nosar": {
+     "psnr": 38.70037494710012,
+     "ssim": 0.9616966843605042,
+     "cloud_psnr": 38.01880883465693
+    },
+    "v6_wrongflag": {
+     "psnr": 35.05483725877964,
+     "ssim": 0.958625316619873,
+     "cloud_psnr": 34.76691396023936
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 32.69372498946913,
+     "ssim": 0.9401701092720032,
+     "cloud_psnr": 32.30092609306767
+    },
+    "v6_paste": {
+     "psnr": 32.94754265688081,
+     "ssim": 0.9439943432807922,
+     "cloud_psnr": 38.75547556207004
+    },
+    "v5b_paste": {
+     "psnr": 32.53958246634877,
+     "ssim": 0.9496945738792419,
+     "cloud_psnr": 36.83762157874857
+    }
+   },
+   "uncertainty_mean": 0.0023003527894616127
+  },
+  {
+   "id": "ls-16",
+   "src": "ls",
+   "source": "Landsat 8/9 (AllClear)",
+   "sensor": "Landsat",
+   "key": "ls_roi967529_20220612_20220610",
+   "scene": null,
+   "rank_quantile": 0.06,
+   "cloud_fraction": 0.212,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 27.835922001790504,
+     "ssim": 0.9110512733459473,
+     "cloud_psnr": 22.092236916823875
+    },
+    "v5b": {
+     "psnr": 25.921498544594613,
+     "ssim": 0.9188374876976013,
+     "cloud_psnr": 24.34389779338881
+    },
+    "v6": {
+     "psnr": 32.44426549301516,
+     "ssim": 0.9727771282196045,
+     "cloud_psnr": 29.90724321047262
+    },
+    "v6_nosar": {
+     "psnr": 30.36586737562267,
+     "ssim": 0.958193838596344,
+     "cloud_psnr": 28.674899876458188
+    },
+    "v6_wrongflag": {
+     "psnr": 28.082851657412476,
+     "ssim": 0.9492351412773132,
+     "cloud_psnr": 26.559577380412502
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 26.479776771106263,
+     "ssim": 0.9312043786048889,
+     "cloud_psnr": 25.38734389834798
+    },
+    "v6_paste": {
+     "psnr": 32.58804134497208,
+     "ssim": 0.9713516235351562,
+     "cloud_psnr": 29.90724321047262
+    },
+    "v5b_paste": {
+     "psnr": 29.526470149550118,
+     "ssim": 0.9474999904632568,
+     "cloud_psnr": 24.34389779338881
+    }
+   },
+   "uncertainty_mean": 0.0019312234362587333
+  },
+  {
+   "id": "ls-17",
+   "src": "ls",
+   "source": "Landsat 8/9 (AllClear)",
+   "sensor": "Landsat",
+   "key": "ls_roi30952_20220725_20220724",
+   "scene": null,
+   "rank_quantile": 0.18,
+   "cloud_fraction": 0.279,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 22.514368355909255,
+     "ssim": 0.784045398235321,
+     "cloud_psnr": 18.562305289168307
+    },
+    "v5b": {
+     "psnr": 25.48637072435211,
+     "ssim": 0.8639549612998962,
+     "cloud_psnr": 25.462263065879448
+    },
+    "v6": {
+     "psnr": 31.88840881199191,
+     "ssim": 0.8581850528717041,
+     "cloud_psnr": 30.68729671001961
+    },
+    "v6_nosar": {
+     "psnr": 29.961281653257466,
+     "ssim": 0.8499295711517334,
+     "cloud_psnr": 28.383136709644106
+    },
+    "v6_wrongflag": {
+     "psnr": 32.6914875261482,
+     "ssim": 0.8673710823059082,
+     "cloud_psnr": 31.343574975818697
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 30.72474368866297,
+     "ssim": 0.8761469721794128,
+     "cloud_psnr": 29.624280526049382
+    },
+    "v6_paste": {
+     "psnr": 27.071562668055087,
+     "ssim": 0.8268809914588928,
+     "cloud_psnr": 30.68729671001961
+    },
+    "v5b_paste": {
+     "psnr": 25.9911718373954,
+     "ssim": 0.8204601407051086,
+     "cloud_psnr": 25.462263065879448
+    }
+   },
+   "uncertainty_mean": 0.002769340295344591
+  },
+  {
+   "id": "ls-18",
+   "src": "ls",
+   "source": "Landsat 8/9 (AllClear)",
+   "sensor": "Landsat",
+   "key": "ls_roi363491_20220831_20220908",
+   "scene": null,
+   "rank_quantile": 0.31,
+   "cloud_fraction": 0.305,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 14.148915328993304,
+     "ssim": 0.7127652168273926,
+     "cloud_psnr": 9.111315779432172
+    },
+    "v5b": {
+     "psnr": 27.66367422668823,
+     "ssim": 0.7809745669364929,
+     "cloud_psnr": 26.437342347671233
+    },
+    "v6": {
+     "psnr": 27.78895871378483,
+     "ssim": 0.8338210582733154,
+     "cloud_psnr": 26.49278918692794
+    },
+    "v6_nosar": {
+     "psnr": 26.721463134455874,
+     "ssim": 0.8319904208183289,
+     "cloud_psnr": 26.01544084750242
+    },
+    "v6_wrongflag": {
+     "psnr": 27.651140298253182,
+     "ssim": 0.7835888862609863,
+     "cloud_psnr": 27.142755070544876
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 26.690227638029146,
+     "ssim": 0.8196279406547546,
+     "cloud_psnr": 25.914877469442366
+    },
+    "v6_paste": {
+     "psnr": 27.770049437067517,
+     "ssim": 0.8568432331085205,
+     "cloud_psnr": 26.49278918692794
+    },
+    "v5b_paste": {
+     "psnr": 27.74723543967522,
+     "ssim": 0.8246905207633972,
+     "cloud_psnr": 26.437342347671233
+    }
+   },
+   "uncertainty_mean": 0.004842487629503012
+  },
+  {
+   "id": "ls-19",
+   "src": "ls",
+   "source": "Landsat 8/9 (AllClear)",
+   "sensor": "Landsat",
+   "key": "ls_roi600278_20220811_20220803",
+   "scene": null,
+   "rank_quantile": 0.43,
+   "cloud_fraction": 0.326,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 15.565654496760644,
+     "ssim": 0.8072835803031921,
+     "cloud_psnr": 10.741134516859336
+    },
+    "v5b": {
+     "psnr": 35.40972473435307,
+     "ssim": 0.9706806540489197,
+     "cloud_psnr": 34.04159818599396
+    },
+    "v6": {
+     "psnr": 30.279397091523816,
+     "ssim": 0.9535161852836609,
+     "cloud_psnr": 29.74123564009199
+    },
+    "v6_nosar": {
+     "psnr": 34.51645651885003,
+     "ssim": 0.963222324848175,
+     "cloud_psnr": 33.20178072133985
+    },
+    "v6_wrongflag": {
+     "psnr": 37.309604845235995,
+     "ssim": 0.9774495959281921,
+     "cloud_psnr": 34.45927149756108
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 36.72448633982769,
+     "ssim": 0.9759359359741211,
+     "cloud_psnr": 32.59253651191274
+    },
+    "v6_paste": {
+     "psnr": 32.176240043763286,
+     "ssim": 0.9572627544403076,
+     "cloud_psnr": 29.74123564009199
+    },
+    "v5b_paste": {
+     "psnr": 34.108641503230565,
+     "ssim": 0.9627161622047424,
+     "cloud_psnr": 34.04159818599396
+    }
+   },
+   "uncertainty_mean": 0.001969686709344387
+  },
+  {
+   "id": "ls-20",
+   "src": "ls",
+   "source": "Landsat 8/9 (AllClear)",
+   "sensor": "Landsat",
+   "key": "ls_roi188780_20221222_20221213",
+   "scene": null,
+   "rank_quantile": 0.57,
+   "cloud_fraction": 0.213,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 21.097036885453335,
+     "ssim": 0.8213174343109131,
+     "cloud_psnr": 14.951127826568971
+    },
+    "v5b": {
+     "psnr": 38.28609770986288,
+     "ssim": 0.9686269760131836,
+     "cloud_psnr": 36.99313285377995
+    },
+    "v6": {
+     "psnr": 37.283641528150106,
+     "ssim": 0.9635763168334961,
+     "cloud_psnr": 35.39839134340369
+    },
+    "v6_nosar": {
+     "psnr": 35.33043489817724,
+     "ssim": 0.9545845985412598,
+     "cloud_psnr": 34.20422264634751
+    },
+    "v6_wrongflag": {
+     "psnr": 38.24106141585533,
+     "ssim": 0.9682950973510742,
+     "cloud_psnr": 36.81437023508096
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 37.87978696644879,
+     "ssim": 0.9681382775306702,
+     "cloud_psnr": 35.94400099436548
+    },
+    "v6_paste": {
+     "psnr": 29.949812975507754,
+     "ssim": 0.9165731072425842,
+     "cloud_psnr": 35.39839134340369
+    },
+    "v5b_paste": {
+     "psnr": 30.031729112405046,
+     "ssim": 0.9122759699821472,
+     "cloud_psnr": 36.99313285377995
+    }
+   },
+   "uncertainty_mean": 0.0018430714262649417
+  },
+  {
+   "id": "ls-21",
+   "src": "ls",
+   "source": "Landsat 8/9 (AllClear)",
+   "sensor": "Landsat",
+   "key": "ls_roi621416_20221029_20221105",
+   "scene": null,
+   "rank_quantile": 0.69,
+   "cloud_fraction": 0.43,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 9.601217954569794,
+     "ssim": 0.5381900668144226,
+     "cloud_psnr": 6.00413713413555
+    },
+    "v5b": {
+     "psnr": 26.645392707799807,
+     "ssim": 0.8720104098320007,
+     "cloud_psnr": 27.020392918114723
+    },
+    "v6": {
+     "psnr": 27.619013849821602,
+     "ssim": 0.8751295208930969,
+     "cloud_psnr": 26.496454942147345
+    },
+    "v6_nosar": {
+     "psnr": 27.760817031700583,
+     "ssim": 0.8722012639045715,
+     "cloud_psnr": 26.4863979856927
+    },
+    "v6_wrongflag": {
+     "psnr": 30.132760719857373,
+     "ssim": 0.9006879925727844,
+     "cloud_psnr": 30.6753790119641
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 29.979185580795892,
+     "ssim": 0.8557764887809753,
+     "cloud_psnr": 29.473119314294465
+    },
+    "v6_paste": {
+     "psnr": 25.910817776949607,
+     "ssim": 0.8026211857795715,
+     "cloud_psnr": 26.496454942147345
+    },
+    "v5b_paste": {
+     "psnr": 26.100550344789326,
+     "ssim": 0.8138766884803772,
+     "cloud_psnr": 27.020392918114723
+    }
+   },
+   "uncertainty_mean": 0.0027626585215330124
+  },
+  {
+   "id": "ls-22",
+   "src": "ls",
+   "source": "Landsat 8/9 (AllClear)",
+   "sensor": "Landsat",
+   "key": "ls_roi303841_20220829_20220822",
+   "scene": null,
+   "rank_quantile": 0.82,
+   "cloud_fraction": 0.671,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 8.713635516458343,
+     "ssim": 0.5373597145080566,
+     "cloud_psnr": 7.003342905070315
+    },
+    "v5b": {
+     "psnr": 22.993544046268305,
+     "ssim": 0.8482060432434082,
+     "cloud_psnr": 23.065915523582284
+    },
+    "v6": {
+     "psnr": 29.942135653965572,
+     "ssim": 0.8583276867866516,
+     "cloud_psnr": 29.856997140669588
+    },
+    "v6_nosar": {
+     "psnr": 28.438021004387384,
+     "ssim": 0.8516685962677002,
+     "cloud_psnr": 27.78125334448999
+    },
+    "v6_wrongflag": {
+     "psnr": 32.13456620060971,
+     "ssim": 0.8745837211608887,
+     "cloud_psnr": 32.83030118994586
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 31.64314947558797,
+     "ssim": 0.8812208771705627,
+     "cloud_psnr": 31.685350380523992
+    },
+    "v6_paste": {
+     "psnr": 28.46773051215124,
+     "ssim": 0.8300590515136719,
+     "cloud_psnr": 29.856997140669588
+    },
+    "v5b_paste": {
+     "psnr": 23.934869415214052,
+     "ssim": 0.8200308680534363,
+     "cloud_psnr": 23.065915523582284
+    }
+   },
+   "uncertainty_mean": 0.003512023948132992
+  },
+  {
+   "id": "ls-23",
+   "src": "ls",
+   "source": "Landsat 8/9 (AllClear)",
+   "sensor": "Landsat",
+   "key": "ls_roi297197_20220331_20220401",
+   "scene": null,
+   "rank_quantile": 0.94,
+   "cloud_fraction": 0.435,
+   "has_mask": true,
+   "target_note": "clear image of the same place on another date",
+   "metrics": {
+    "input": {
+     "psnr": 11.565631960139896,
+     "ssim": 0.6535901427268982,
+     "cloud_psnr": 7.969602480028963
+    },
+    "v5b": {
+     "psnr": 34.4953904644748,
+     "ssim": 0.9323065876960754,
+     "cloud_psnr": 34.98304241198305
+    },
+    "v6": {
+     "psnr": 36.78594013933332,
+     "ssim": 0.9521289467811584,
+     "cloud_psnr": 37.61634533913078
+    },
+    "v6_nosar": {
+     "psnr": 36.291942948747945,
+     "ssim": 0.9472195506095886,
+     "cloud_psnr": 37.3376023776083
+    },
+    "v6_wrongflag": {
+     "psnr": 34.70241797571275,
+     "ssim": 0.9508679509162903,
+     "cloud_psnr": 36.11257467273802
+    },
+    "v6_nosar_wrongflag": {
+     "psnr": 34.26491447055166,
+     "ssim": 0.9521710872650146,
+     "cloud_psnr": 35.25779623128127
+    },
+    "v6_paste": {
+     "psnr": 34.94117837926221,
+     "ssim": 0.9360085129737854,
+     "cloud_psnr": 37.61634533913078
+    },
+    "v5b_paste": {
+     "psnr": 34.163687751603796,
+     "ssim": 0.9186184406280518,
+     "cloud_psnr": 34.98304241198305
+    }
+   },
+   "uncertainty_mean": 0.0017182042356580496
+  }
+ ],
+ "uncertainty_scale": 0.012123266234993935,
+ "sar_range_db": [
+  -35.0,
+  5.0
+ ]
+}

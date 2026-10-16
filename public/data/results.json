@@ -1,0 +1,168 @@
+{
+ "real": {
+  "spring_by_scene": {
+   "66": {
+    "n": 200,
+    "psnr_in": 15.019,
+    "psnr_v5b": 14.865,
+    "psnr_v6": 23.034,
+    "ssim_in": 0.741,
+    "ssim_v5b": 0.715,
+    "ssim_v6": 0.815
+   },
+   "75": {
+    "n": 200,
+    "psnr_in": 11.593,
+    "psnr_v5b": 36.101,
+    "psnr_v6": 36.894,
+    "ssim_in": 0.462,
+    "ssim_v5b": 0.931,
+    "ssim_v6": 0.937
+   },
+   "77": {
+    "n": 200,
+    "psnr_in": 15.296,
+    "psnr_v5b": 23.48,
+    "psnr_v6": 25.184,
+    "ssim_in": 0.634,
+    "ssim_v5b": 0.794,
+    "ssim_v6": 0.783
+   }
+  },
+  "spring_all": {
+   "n": 600,
+   "psnr_in": 13.969,
+   "psnr_v5b": 24.815,
+   "psnr_v6": 28.371,
+   "ssim_in": 0.612,
+   "ssim_v5b": 0.813,
+   "ssim_v6": 0.845
+  },
+  "ac": {
+   "n": 452,
+   "psnr_in": 18.745,
+   "psnr_v5b": 30.306,
+   "psnr_v6": 31.789,
+   "ssim_in": 0.748,
+   "ssim_v5b": 0.882,
+   "ssim_v6": 0.889
+  },
+  "ls": {
+   "n": 445,
+   "psnr_in": 17.169,
+   "psnr_v5b": 28.988,
+   "psnr_v6": 30.755,
+   "ssim_in": 0.712,
+   "ssim_v5b": 0.868,
+   "ssim_v6": 0.89
+  }
+ },
+ "composite": {
+  "ac": {
+   "n": 452,
+   "cloud_fraction": 0.407,
+   "cloud_db": {
+    "input": 14.92,
+    "fill": 35.37,
+    "v5b": 29.8,
+    "v6": 31.4,
+    "v6_nosar": 30.69,
+    "v5b_paste": 29.8,
+    "v6_paste": 31.4
+   },
+   "image_db": {
+    "input": 19.52,
+    "fill": 39.97,
+    "v5b": 30.57,
+    "v6": 32.46,
+    "v6_nosar": 31.89,
+    "v5b_paste": 34.4,
+    "v6_paste": 36.0
+   },
+   "ssim": {
+    "input": 0.782,
+    "v5b": 0.893,
+    "v6": 0.903
+   },
+   "clear_db": {
+    "v5b": 31.34,
+    "v6": 33.57
+   },
+   "v6_beats_v5b": 0.684,
+   "v6_beats_fill": 0.17,
+   "sar_helps": 0.624
+  },
+  "ls": {
+   "n": 445,
+   "cloud_fraction": 0.426,
+   "cloud_db": {
+    "input": 13.52,
+    "fill": 35.96,
+    "v5b": 28.64,
+    "v6": 30.18,
+    "v6_nosar": 29.6,
+    "v5b_paste": 28.64,
+    "v6_paste": 30.18
+   },
+   "image_db": {
+    "input": 17.84,
+    "fill": 40.27,
+    "v5b": 29.37,
+    "v6": 31.4,
+    "v6_nosar": 31.04,
+    "v5b_paste": 32.96,
+    "v6_paste": 34.49
+   },
+   "ssim": {
+    "input": 0.756,
+    "v5b": 0.881,
+    "v6": 0.901
+   },
+   "clear_db": {
+    "v5b": 30.29,
+    "v6": 32.73
+   },
+   "v6_beats_v5b": 0.661,
+   "v6_beats_fill": 0.099,
+   "sar_helps": 0.609
+  }
+ },
+ "ablation": {
+  "ac": {
+   "n": 200,
+   "out_change_255": 3.36,
+   "sar_on": {
+    "correct": 31.67,
+    "wrong": 30.28,
+    "diff": 1.4,
+    "se": 0.19,
+    "win": 0.72
+   },
+   "sar_off": {
+    "correct": 31.2,
+    "wrong": 29.15,
+    "diff": 2.06,
+    "se": 0.22,
+    "win": 0.74
+   }
+  },
+  "ls": {
+   "n": 200,
+   "out_change_255": 3.53,
+   "sar_on": {
+    "correct": 30.86,
+    "wrong": 31.0,
+    "diff": -0.13,
+    "se": 0.21,
+    "win": 0.48
+   },
+   "sar_off": {
+    "correct": 30.09,
+    "wrong": 30.14,
+    "diff": -0.05,
+    "se": 0.25,
+    "win": 0.525
+   }
+  }
+ }
+}
