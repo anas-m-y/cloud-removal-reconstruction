@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { scrollToId } from '../lib/motion.js';
+import { GlassSurface } from '../bits/Glass.jsx';
 
 const LINKS = [['problem', 'Problem'], ['method', 'Method'], ['playground', 'Playground'], ['try', 'Try your own'], ['results', 'Results'], ['limits', 'Limits']];
 
 export const Mark = () => (
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="12" cy="12" r="10.5" stroke="#72e4ee" strokeWidth="1.5" />
-    <path d="M12 1.5v21" stroke="#f2ad4e" strokeWidth="1.5" />
-    <path d="M12 6.5a5.5 5.5 0 0 1 0 11" fill="#72e4ee" />
+    <defs><linearGradient id="mk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7ff0ff" /><stop offset="1" stopColor="#9b7bff" /></linearGradient></defs>
+    <circle cx="12" cy="12" r="10.5" stroke="url(#mk)" strokeWidth="1.5" />
+    <path d="M12 1.5v21" stroke="#c9b8ff" strokeWidth="1.5" />
+    <path d="M12 6.5a5.5 5.5 0 0 1 0 11" fill="url(#mk)" />
   </svg>
 );
 
@@ -23,14 +25,14 @@ export default function Nav() {
   }, []);
   return (
     <header className={`nav${scrolled ? ' scrolled' : ''}`}>
-      <div className="wrap">
+      <GlassSurface className="nav-bar" strength={26} blur={14}>
         <a className="brand" href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0 }); }}><Mark />CLOUDLESS</a>
         <nav className="nav-links" aria-label="Sections">
           {LINKS.map(([id, label]) => (
             <button key={id} className={`${active === id ? 'on' : ''}${id === 'playground' ? ' keep' : ''}`} onClick={() => scrollToId(id)}>{label}</button>
           ))}
         </nav>
-      </div>
+      </GlassSurface>
     </header>
   );
 }

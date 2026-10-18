@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import Compare from './Compare.jsx';
+import { GlassButton } from '../bits/Glass.jsx';
 import ModelLoader from './ModelLoader.jsx';
 import { sampleURL } from '../lib/data.js';
 import { pixelsFromImage, pixelsToURL } from '../lib/img.js';
@@ -58,8 +59,8 @@ export default function TryYourOwn({ hero }) {
                 </div></div>
               <p className="notice">No radar comes with an uploaded picture, so v6 runs in its no-radar mode. Screenshots are not calibrated reflectance, so treat the result as approximate. True-colour images at 10 to 30 m per pixel work best.</p>
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <button className="btn primary" disabled={!src || busy} onClick={run}>{busy ? 'Reconstructing…' : 'Remove the clouds'}</button>
-                <button className="btn" onClick={useSample}>Use a gallery scene</button>
+                <GlassButton variant="primary" disabled={!src || busy} onClick={run}>{busy ? 'Reconstructing…' : 'Remove the clouds'}</GlassButton>
+                <GlassButton onClick={useSample}>Use a gallery scene</GlassButton>
               </div>
               <ModelLoader />
               {err && <p className="err">{err}</p>}

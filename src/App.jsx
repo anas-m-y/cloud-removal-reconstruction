@@ -1,6 +1,7 @@
 import { useData } from './lib/data.js';
 import { useSmoothScroll } from './lib/motion.js';
 import Nav from './components/Nav.jsx';
+import BackdropLayer from './three/BackdropLayer.jsx';
 import Hero from './components/Hero.jsx';
 import Problem from './components/Problem.jsx';
 import Pipeline from './components/Pipeline.jsx';
@@ -17,6 +18,7 @@ export default function App() {
   if (!data) return <div style={{ minHeight: '100vh' }} aria-busy="true" />;
   return (
     <>
+      <BackdropLayer />
       <a className="sr-only" href="#playground">Skip to the playground</a>
       <Nav />
       <main>

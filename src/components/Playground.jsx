@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import Compare from './Compare.jsx';
+import { GlassButton } from '../bits/Glass.jsx';
 import CountUp from '../bits/CountUp.jsx';
 import ModelLoader from './ModelLoader.jsx';
 import { sampleURL } from '../lib/data.js';
@@ -107,7 +108,7 @@ export default function Playground({ gallery }) {
           <div className="viewer">
             {view?.outURL
               ? <Compare left={leftURL} right={view.outURL} leftLabel={leftLabel} rightLabel={liveRes ? `${modelName}, live` : modelName} overlay={ov} overlayKind={overlay} />
-              : <div className="empty"><div><p>This combination was not precomputed.</p><button className="btn primary" onClick={runLive} disabled={busy}>Run it live on this device</button></div></div>}
+              : <div className="empty"><div><p>This combination was not precomputed.</p><GlassButton variant="primary" onClick={runLive} disabled={busy}>Run it live on this device</GlassButton></div></div>}
             <p className="viewer-note">
               {overlay === 'conf' && 'Brighter means the model was less certain: the spread of 16 passes with dropout switched on. '}
               {overlay === 'mask' && 'Highlighted pixels are flagged as cloud by the satellite\'s own mask. '}
@@ -151,7 +152,7 @@ export default function Playground({ gallery }) {
               </div>
             </section>
             <section aria-label="Run live">
-              <button className="btn" onClick={runLive} disabled={!isV6 || busy}>{busy ? 'Running…' : liveRes ? 'Run again on this device' : 'Run v6 live on this device'}</button>
+              <GlassButton onClick={runLive} disabled={!isV6 || busy}>{busy ? 'Running…' : liveRes ? 'Run again on this device' : 'Run v6 live on this device'}</GlassButton>
               {busy && <ModelLoader compact />}
               {liveRes && <p className="live-out">Ran in <b className="num">{Math.round(liveRes.ms)} ms</b> on {liveRes.backend}.
                 {liveRes.diff != null && <> Differs from the precomputed image by <b className="num">{liveRes.diff.toFixed(2)}</b> grey levels out of 255 on average.</>}</p>}
