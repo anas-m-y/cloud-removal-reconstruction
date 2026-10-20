@@ -34,11 +34,12 @@ export default function Playground({ gallery }) {
   const s = samples.find((x) => x.id === id);
   const shown = useMemo(() => samples.filter((x) => filter === 'all' || x.src === filter), [samples, filter]);
   const isV6 = model === 'v6';
-  const variant = isV6 ? `v6${radar ? '' : '_nosar'}${flag === 'swapped' ? '_wrongflag' : ''}` : 'v5b';
   const refineOn = isV6 && (passes > 1 || match);
+  const refineTag = refineOn ? `_p${passes}${match ? '_match' : ''}` : '';     // e.g. v6_p4_match; precomputed for radar on, correct flag
+  const variant = isV6 ? `v6${radar ? '' : '_nosar'}${flag === 'swapped' ? '_wrongflag' : ''}${refineTag}` : 'v5b';
   const liveKey = `${id}|${radar}|${flag}|${isV6 ? passes : 1}|${isV6 && match}`;
   const liveRes = isV6 ? live[liveKey] : null;
-  const precomputed = !refineOn && variant in s.metrics;      // the precomputed images are plain model output
+  const precomputed = variant in s.metrics;                   // refined variants exist only for some combinations; others run live
   const canKeep = s.has_mask;
 
   useEffect(() => { if (!s.has_mask) { setKeep(false); if (overlay === 'mask') setOverlay('none'); } }, [s, overlay]);
