@@ -215,6 +215,16 @@ button, input, select { font: inherit; color: inherit; }
 .thumb span { position: absolute; left: 4px; bottom: 4px; font: 500 10.5px var(--mono); background: rgba(6,16,28,.8); padding: 1px 5px; border-radius: 2px; }
 .pg { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, .85fr); gap: clamp(20px, 3vw, 36px); align-items: start; margin-top: 10px; }
 @media (max-width: 960px) { .pg { grid-template-columns: 1fr; } }
+.pg-strip { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) 320px; }
+.console.pg-strip section { border-bottom: 0; }
+.pg-strip section[aria-label='Scores'] { border-right: 1px solid var(--line); }
+.pg-strip .readouts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.pg-strip section[aria-label='Run live'] { display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+@media (max-width: 960px) {
+  .pg-strip { grid-template-columns: 1fr; }
+  .pg-strip section[aria-label='Scores'] { border-right: 0; border-bottom: 1px solid var(--line); }
+  .pg-strip .readouts { grid-template-columns: 1fr 1fr; }
+}
 .viewer { position: relative; }
 .compare { position: relative; aspect-ratio: 1; border: 1px solid var(--line-strong); border-radius: 4px; overflow: hidden; background: #000; touch-action: pan-y; user-select: none; cursor: ew-resize; }
 .compare > img, .compare .layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
