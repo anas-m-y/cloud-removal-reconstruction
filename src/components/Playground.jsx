@@ -129,10 +129,19 @@ export default function Playground({ gallery }) {
             <section aria-label="View controls">
               <h3>View</h3>
               <div className="ctrl"><span>Compare with</span><Seg label="Compare with" value={against} onChange={setAgainst} options={[['input', 'Input'], ['target', 'Clear image']]} /></div>
-              <div className="ctrl" style={{ gridTemplateColumns: '1fr' }}>
+              <div className="ctrl" style={{ gridTemplateColumns: 'max-content' }}>
                 <Seg label="Overlay" value={overlay} onChange={setOverlay} options={OVERLAYS.map(([v, l]) => [v, l])} />
               </div>
             </section>
+            <section aria-label="About this scene">
+              <div className="meta">
+                <span><b>{s.source}</b>{s.scene ? `, scene ${s.scene}` : ''}</span>
+                <span>{Math.round(s.cloud_fraction * 100)}% cloud. Picked at the {pct(s.rank_quantile)} percentile of v6's gain.</span>
+              </div>
+            </section>
+          </div>
+
+          <div className="console pg-strip">
             <section aria-label="Scores">
               <h3>Scores against the clear image</h3>
               <dl className="readouts">
@@ -143,12 +152,6 @@ export default function Playground({ gallery }) {
                 <div className="readout"><dt>SSIM, cloudy input</dt><dd>{view ? view.inpS.toFixed(3) : '–'}</dd></div>
               </dl>
               <p className="viewer-note" style={{ marginTop: 12, fontSize: 13 }}>The clear image is from another date, so one scene can swing a dB or two either way. The composite test under Results is the fair comparison.{isV6 && match && ' Colour matching follows the clear pixels of the cloudy picture itself, not the other date, so this score can drop even when the result looks closer to what the satellite saw.'}</p>
-            </section>
-            <section aria-label="About this scene">
-              <div className="meta">
-                <span><b>{s.source}</b>{s.scene ? `, scene ${s.scene}` : ''}</span>
-                <span>{Math.round(s.cloud_fraction * 100)}% cloud. Picked at the {pct(s.rank_quantile)} percentile of v6's gain.</span>
-              </div>
             </section>
             <section aria-label="Run live">
               <GlassButton onClick={runLive} disabled={!isV6 || busy}>{busy ? 'Running…' : liveRes ? 'Run again on this device' : 'Run v6 live on this device'}</GlassButton>
