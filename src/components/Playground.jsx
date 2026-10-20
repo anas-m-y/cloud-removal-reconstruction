@@ -3,6 +3,7 @@ import Compare from './Compare.jsx';
 import { GlassButton } from '../bits/Glass.jsx';
 import CountUp from '../bits/CountUp.jsx';
 import ModelLoader from './ModelLoader.jsx';
+import { Seg, Switch } from './Controls.jsx';
 import { sampleURL } from '../lib/data.js';
 import { loadPixels, paste, pixelsToURL, psnr, ssim, meanAbsDiff } from '../lib/img.js';
 import { reconstruct } from '../lib/model.js';
@@ -11,16 +12,6 @@ import { SITE } from '../config.js';
 const FILTERS = [['all', 'All 24'], ['sp', 'Sentinel-2 spring'], ['ac', 'Sentinel-2 AllClear'], ['ls', 'Landsat']];
 const OVERLAYS = [['none', 'None'], ['conf', 'Confidence'], ['mask', 'Cloud mask'], ['sar', 'Radar']];
 
-function Seg({ value, onChange, options, label, disabled }) {
-  return (
-    <div className="seg" role="group" aria-label={label}>
-      {options.map(([v, l]) => <button key={v} aria-pressed={value === v} disabled={disabled} onClick={() => onChange(v)}>{l}</button>)}
-    </div>
-  );
-}
-function Switch({ checked, onChange, label, radar, disabled }) {
-  return <button className={`switch${radar ? ' radar' : ''}`} role="switch" aria-checked={checked} aria-label={label} disabled={disabled} onClick={() => onChange(!checked)} />;
-}
 const pct = (q) => `${Math.round(q * 100)}th`;
 
 export default function Playground({ gallery }) {
@@ -31,6 +22,8 @@ export default function Playground({ gallery }) {
   const [radar, setRadar] = useState(true);
   const [flag, setFlag] = useState('correct');
   const [keep, setKeep] = useState(false);
+  const [passes, setPasses] = useState(1);         // live runs only: how many flipped/rotated runs to average
+  const [match, setMatch] = useState(false);       // live runs only: match colours and keep clear pixels with an estimated mask
   const [against, setAgainst] = useState('input');
   const [overlay, setOverlay] = useState('none');
   const [live, setLive] = useState({});           // key -> { px, ms, backend, diff }
@@ -42,9 +35,10 @@ export default function Playground({ gallery }) {
   const shown = useMemo(() => samples.filter((x) => filter === 'all' || x.src === filter), [samples, filter]);
   const isV6 = model === 'v6';
   const variant = isV6 ? `v6${radar ? '' : '_nosar'}${flag === 'swapped' ? '_wrongflag' : ''}` : 'v5b';
-  const liveKey = `${id}|${radar}|${flag}`;
+  const refineOn = isV6 && (passes > 1 || match);
+  const liveKey = `${id}|${radar}|${flag}|${isV6 ? passes : 1}|${isV6 && match}`;
   const liveRes = isV6 ? live[liveKey] : null;
-  const precomputed = variant in s.metrics;
+  const precomputed = !refineOn && variant in s.metrics;      // the precomputed images are plain model output
   const canKeep = s.has_mask;
 
   useEffect(() => { if (!s.has_mask) { setKeep(false); if (overlay === 'mask') setOverlay('none'); } }, [s, overlay]);
@@ -71,7 +65,7 @@ export default function Playground({ gallery }) {
     try {
       const [inPx, sarPx] = await Promise.all([loadPixels(sampleURL(id, 'input')), radar ? loadPixels(sampleURL(id, 'sar_raw')) : null]);
       const sensor = (s.sensor === 'Landsat' ? 1 : 0) ^ (flag === 'swapped' ? 1 : 0);
-      const r = await reconstruct(inPx, sarPx, sensor, gallery.sar_range_db);
+      const r = await reconstruct(inPx, sarPx, sensor, gallery.sar_range_db, { passes, match });
       let diff = null;
       if (precomputed) diff = meanAbsDiff(r.px, await loadPixels(sampleURL(id, variant)));
       setLive((L) => ({ ...L, [liveKey]: { ...r, diff } }));
@@ -79,7 +73,7 @@ export default function Playground({ gallery }) {
     setBusy(false);
   };
 
-  const modelName = isV6 ? `v6${radar ? '' : ', no radar'}${flag === 'swapped' ? ', swapped flag' : ''}` : 'v5b';
+  const modelName = isV6 ? `v6${radar ? '' : ', no radar'}${flag === 'swapped' ? ', swapped flag' : ''}${passes > 1 ? `, ${passes}-run average` : ''}${match ? ', colour matched' : ''}` : 'v5b';
   const leftURL = against === 'input' ? sampleURL(id, 'input') : sampleURL(id, 'target');
   const leftLabel = against === 'input' ? 'Cloudy input' : 'Clear image, other date';
   const ov = overlay === 'conf' ? sampleURL(id, 'conf') : overlay === 'mask' ? sampleURL(id, 'mask') : overlay === 'sar' ? sampleURL(id, 'sar') : null;
@@ -126,6 +120,10 @@ export default function Playground({ gallery }) {
               <div className="ctrl"><span>Satellite flag</span><Seg label="Satellite flag" value={flag} onChange={setFlag} disabled={!isV6} options={[['correct', 'Correct'], ['swapped', 'Swapped']]} /></div>
               <div className="ctrl"><span>Keep clear pixels</span><Switch label="Keep clear pixels" checked={keep && canKeep} onChange={setKeep} disabled={!canKeep} />
                 <small>{canKeep ? 'Only replace pixels the cloud mask flags; the rest stay as captured.' : 'No cloud mask exists for this source.'}</small></div>
+              <div className="ctrl"><span>Flip averaging</span><Seg label="Flip averaging" value={passes} onChange={setPasses} disabled={!isV6} options={[[1, 'Off'], [4, '4 runs'], [8, '8 runs']]} />
+                <small>Runs the model on flipped copies and averages them. Slower, a little cleaner.</small></div>
+              <div className="ctrl"><span>Match colours</span><Switch label="Match colours and keep clear pixels with an estimated cloud mask" checked={isV6 && match} onChange={setMatch} disabled={!isV6} />
+                <small>Guesses the cloud from where the model changed the picture, matches the filled colour to the clear pixels around it, and restores the original pixels elsewhere.</small></div>
             </section>
             <section aria-label="View controls">
               <h3>View</h3>
@@ -143,7 +141,7 @@ export default function Playground({ gallery }) {
                 <div className="readout"><dt>SSIM, output</dt><dd>{view?.outS != null ? view.outS.toFixed(3) : '–'}</dd></div>
                 <div className="readout"><dt>SSIM, cloudy input</dt><dd>{view ? view.inpS.toFixed(3) : '–'}</dd></div>
               </dl>
-              <p className="viewer-note" style={{ marginTop: 12, fontSize: 13 }}>The clear image is from another date, so one scene can swing a dB or two either way. The composite test under Results is the fair comparison.</p>
+              <p className="viewer-note" style={{ marginTop: 12, fontSize: 13 }}>The clear image is from another date, so one scene can swing a dB or two either way. The composite test under Results is the fair comparison.{isV6 && match && ' Colour matching follows the clear pixels of the cloudy picture itself, not the other date, so this score can drop even when the result looks closer to what the satellite saw.'}</p>
             </section>
             <section aria-label="About this scene">
               <div className="meta">
