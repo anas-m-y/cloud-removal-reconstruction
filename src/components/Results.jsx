@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { GroupedBars, DiffDots, DataTable } from './Charts.jsx';
 
-const C = { input: '#c0608f', v5b: '#5b6ee8', v6: '#1c9eae', radar: '#b47f27' };
-const SERIES = [{ key: 'in', label: 'Cloudy input', color: C.input }, { key: 'v5b', label: 'v5b', color: C.v5b }, { key: 'v6', label: 'v6', color: C.v6 }];
+const C = { input: '#5e6468', v5b: '#a7adaa', v6: '#5cb8ff', radar: '#2f6fa8' };
+const SERIES = [{ key: 'in', label: 'Cloudy input', color: C.input }, { key: 'v5b', label: 'A6', color: C.v5b }, { key: 'v6', label: 'A7', color: C.v6 }];
 const Legend = ({ items }) => (
   <div className="legend">{items.map((s) => <span key={s.label}><i className={s.dash ? 'dash' : ''} style={s.dash ? null : { background: s.color, opacity: s.alpha ?? 1 }} />{s.label}</span>)}</div>
 );
@@ -18,8 +18,8 @@ export default function Results({ results }) {
   const isP = metric === 'psnr', fmt = isP ? (v) => v.toFixed(1) : (v) => v.toFixed(3);
 
   const comp = results.composite;
-  const compSeries = [{ key: 'input', label: 'Cloudy input', color: C.input }, { key: 'v5b', label: 'v5b', color: C.v5b },
-    { key: 'v6', label: 'v6 with radar', color: C.v6 }, { key: 'v6_nosar', label: 'v6 without radar', color: C.radar }];
+  const compSeries = [{ key: 'input', label: 'Cloudy input', color: C.input }, { key: 'v5b', label: 'A6', color: C.v5b },
+    { key: 'v6', label: 'A7 with radar', color: C.v6 }, { key: 'v6_nosar', label: 'A7 without radar', color: C.radar }];
   const ab = results.ablation;
 
   return (
@@ -31,8 +31,8 @@ export default function Results({ results }) {
         </div>
         <div className="charts">
           <div className="chart-block">
-            <h3>v6 beats v5b on every test set</h3>
-            <p>The biggest change is spring scene 66, bright terrain where v5b did no better than leaving the cloud in place. Synthetic bright-terrain training moved it from {sc['66'].psnr_v5b.toFixed(1)} to {sc['66'].psnr_v6.toFixed(1)} dB.</p>
+            <h3>A7 beats A6 on every test set</h3>
+            <p>The biggest change is spring scene 66, bright terrain where A6 did no better than leaving the cloud in place. Synthetic bright-terrain training moved it from {sc['66'].psnr_v5b.toFixed(1)} to {sc['66'].psnr_v6.toFixed(1)} dB.</p>
             <div className="chart-tools">
               <Legend items={SERIES} />
               <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
@@ -41,7 +41,7 @@ export default function Results({ results }) {
               </div>
             </div>
             {tables.real
-              ? <DataTable head={['Test set', 'n', 'Input', 'v5b', 'v6']} rows={realRows.map(([l, d]) => [l, d.n, fmt(d[`${metric}_in`]), fmt(d[`${metric}_v5b`]), fmt(d[`${metric}_v6`])])} />
+              ? <DataTable head={['Test set', 'n', 'Input', 'A6', 'A7']} rows={realRows.map(([l, d]) => [l, d.n, fmt(d[`${metric}_in`]), fmt(d[`${metric}_v5b`]), fmt(d[`${metric}_v6`])])} />
               : <GroupedBars groups={groups} series={SERIES} max={isP ? 40 : 1} unit={isP ? 'dB' : ''} fmt={fmt} labelKey="v6" />}
           </div>
 
@@ -53,7 +53,7 @@ export default function Results({ results }) {
               <button className="linkbtn" onClick={() => toggle('comp')}>{tables.comp ? 'Show chart' : 'Show table'}</button>
             </div>
             {tables.comp
-              ? <DataTable head={['Method', 'Sentinel-2, dB', 'Landsat, dB']} rows={[['Cloudy input', 'input'], ['Flat colour fill', 'fill'], ['v5b', 'v5b'], ['v6 with radar', 'v6'], ['v6 without radar', 'v6_nosar']].map(([l, k]) => [l, comp.ac.cloud_db[k].toFixed(2), comp.ls.cloud_db[k].toFixed(2)])} />
+              ? <DataTable head={['Method', 'Sentinel-2, dB', 'Landsat, dB']} rows={[['Cloudy input', 'input'], ['Flat colour fill', 'fill'], ['A6', 'v5b'], ['A7 with radar', 'v6'], ['A7 without radar', 'v6_nosar']].map(([l, k]) => [l, comp.ac.cloud_db[k].toFixed(2), comp.ls.cloud_db[k].toFixed(2)])} />
               : <div className="smalls">
                   {[['ac', 'Sentinel-2, AllClear'], ['ls', 'Landsat 8/9']].map(([k, l]) => (
                     <div key={k}><h4>{l} <span style={{ color: 'var(--muted)', fontWeight: 400 }}>(n = {comp[k].n})</span></h4>
@@ -62,14 +62,14 @@ export default function Results({ results }) {
                   ))}
                 </div>}
             <p className="verdict">
-              <strong>Radar helps.</strong> Removing it costs v6 {(comp.ac.cloud_db.v6 - comp.ac.cloud_db.v6_nosar).toFixed(2)} dB on Sentinel-2 and {(comp.ls.cloud_db.v6 - comp.ls.cloud_db.v6_nosar).toFixed(2)} dB on Landsat, and radar improves {Math.round(comp.ac.sar_helps * 100)}% and {Math.round(comp.ls.sar_helps * 100)}% of scenes.
-              {' '}v6 beats v5b on cloud pixels in {Math.round(comp.ac.v6_beats_v5b * 100)}% and {Math.round(comp.ls.v6_beats_v5b * 100)}% of scenes. Keeping the clear pixels as captured lifts whole-image PSNR to {comp.ac.image_db.v6_paste} and {comp.ls.image_db.v6_paste} dB.
+              <strong>Radar helps.</strong> Removing it costs A7 {(comp.ac.cloud_db.v6 - comp.ac.cloud_db.v6_nosar).toFixed(2)} dB on Sentinel-2 and {(comp.ls.cloud_db.v6 - comp.ls.cloud_db.v6_nosar).toFixed(2)} dB on Landsat, and radar improves {Math.round(comp.ac.sar_helps * 100)}% and {Math.round(comp.ls.sar_helps * 100)}% of scenes.
+              {' '}A7 beats A6 on cloud pixels in {Math.round(comp.ac.v6_beats_v5b * 100)}% and {Math.round(comp.ls.v6_beats_v5b * 100)}% of scenes. Keeping the clear pixels as captured lifts whole-image PSNR to {comp.ac.image_db.v6_paste} and {comp.ls.image_db.v6_paste} dB.
             </p>
           </div>
 
           {ab && <div className="chart-block">
             <h3>Does the model use the satellite flag?</h3>
-            <p>We gave v6 the wrong satellite flag on {ab.ac.n} scenes per sensor and measured the PSNR lost on cloud pixels. Bars show 95% intervals.</p>
+            <p>We gave A7 the wrong satellite flag on {ab.ac.n} scenes per sensor and measured the PSNR lost on cloud pixels. Bars show 95% intervals.</p>
             <div className="chart-tools"><span /><button className="linkbtn" onClick={() => toggle('ab')}>{tables.ab ? 'Show chart' : 'Show table'}</button></div>
             {(() => {
               const rows = [['Sentinel-2, radar on', ab.ac.sar_on], ['Sentinel-2, radar off', ab.ac.sar_off], ['Landsat, radar on', ab.ls.sar_on], ['Landsat, radar off', ab.ls.sar_off]];
@@ -77,7 +77,7 @@ export default function Results({ results }) {
                 ? <DataTable head={['Setting', 'Correct flag, dB', 'Swapped flag, dB', 'Difference', '± s.e.', 'Correct wins']} rows={rows.map(([l, d]) => [l, d.correct.toFixed(2), d.wrong.toFixed(2), d.diff.toFixed(2), d.se.toFixed(2), `${Math.round(d.win * 100)}%`])} />
                 : <DiffDots color={C.v6} rows={rows.map(([label, d]) => ({ label, ...d }))} />;
             })()}
-            <p className="verdict"><strong>Yes for Sentinel-2, no for Landsat.</strong> Swapping the flag costs {ab.ac.sar_on.diff.toFixed(2)} dB on Sentinel-2, while Landsat is unchanged within noise. v6's Landsat improvement comes from training on Landsat data rather than from the flag itself.</p>
+            <p className="verdict"><strong>Yes for Sentinel-2, no for Landsat.</strong> Swapping the flag costs {ab.ac.sar_on.diff.toFixed(2)} dB on Sentinel-2, while Landsat is unchanged within noise. A7's Landsat improvement comes from training on Landsat data rather than from the flag itself.</p>
           </div>}
         </div>
       </div>

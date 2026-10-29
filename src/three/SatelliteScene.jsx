@@ -3,9 +3,10 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
-// A Sentinel-style radar satellite built from primitives, flown across the hero image by scroll.
-// The orthographic camera works in CSS pixels, so the satellite and its beam line up exactly with the DOM image below.
-// `pass` is a mutable ref { p, imgLeft, imgTop, imgW, imgH, stageW, stageH } written by the hero; nothing here sets React state per frame.
+// A Sentinel-style radar satellite built from primitives, flown across the hero's tile wall by scroll.
+// The orthographic camera works in CSS pixels, so the satellite and its beam line up exactly with the DOM tiles below.
+// `pass` is a mutable ref written by the hero: { x, on, imgLeft, imgTop, imgW, imgH, stageW, stageH, laneH, scale, beamW }.
+// The hero already smooths x, so this scene follows it exactly; nothing here sets React state per frame.
 
 function canvasTexture(w, h, draw) {
   const c = document.createElement('canvas'); c.width = w; c.height = h;
@@ -52,7 +53,7 @@ function useMaterials() {
       panelBack: new THREE.MeshStandardMaterial({ color: '#c8cdd6', metalness: 0.4, roughness: 0.5 }),
       sar: new THREE.MeshStandardMaterial({ map: sar, metalness: 0.35, roughness: 0.4 }),
       lens: new THREE.MeshPhysicalMaterial({ color: '#0a1830', metalness: 0.2, roughness: 0.05, clearcoat: 1, envMapIntensity: 2 }),
-      glow: new THREE.MeshBasicMaterial({ color: '#8ff3ff', toneMapped: false }),
+      glow: new THREE.MeshBasicMaterial({ color: '#5cb8ff', toneMapped: false }),
     };
   }, []);
 }
@@ -90,7 +91,7 @@ function Satellite({ pass }) {
   const st = useRef({ x: null, v: 0 });
   const beamMat = useMemo(() => new THREE.ShaderMaterial({
     transparent: true, depthWrite: false, depthTest: false,
-    uniforms: { uTime: { value: 0 }, uOn: { value: 0 }, uTop: { value: 0.06 }, uA: { value: new THREE.Color('#7ff0ff') }, uB: { value: new THREE.Color('#8c6bff') } },
+    uniforms: { uTime: { value: 0 }, uOn: { value: 0 }, uTop: { value: 0.06 }, uA: { value: new THREE.Color('#bfe3ff') }, uB: { value: new THREE.Color('#5cb8ff') } },
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
     fragmentShader: `
       varying vec2 vUv; uniform float uTime, uOn, uTop; uniform vec3 uA, uB;
@@ -110,30 +111,28 @@ function Satellite({ pass }) {
 
   useFrame((state, dt) => {
     const L = pass.current; if (!L.imgW) return;
-    const t = state.clock.elapsedTime, s = L.imgW / 420;
-    const target = L.imgLeft + L.p * L.imgW - L.stageW / 2;
+    const t = state.clock.elapsedTime, s = L.scale;
+    const nx = L.imgLeft + L.x - L.stageW / 2;
     const S = st.current;
-    if (S.x === null) S.x = target;
-    const nx = S.x + (target - S.x) * (1 - Math.exp(-dt * 7));
-    S.v = THREE.MathUtils.lerp(S.v, (nx - S.x) / Math.max(dt, 1e-3), 0.15); S.x = nx;
+    if (S.x === null) S.x = nx;
+    S.v = THREE.MathUtils.lerp(S.v, (nx - S.x) / Math.max(dt, 1e-3), 0.12); S.x = nx;
     const laneY = L.stageH / 2 - L.laneH * 0.5;
     root.current.position.set(S.x, laneY + Math.sin(t * 1.3) * 2.2 * s, 0);
     root.current.scale.setScalar(s);
-    root.current.rotation.z = THREE.MathUtils.clamp(-S.v * 0.0009, -0.22, 0.22);
+    root.current.rotation.z = THREE.MathUtils.clamp(-S.v * 0.0006, -0.16, 0.16);   // banks gently into the motion
     body.current.rotation.y = -0.62 + Math.sin(t * 0.35) * 0.07;
     const tilt = 0.55 + Math.sin(t * 0.45) * 0.28;
     wl.current.rotation.x = tilt; wr.current.rotation.x = tilt;
-    ring.current.material.color.setHSL(0.52 + Math.sin(t * 2) * 0.03, 1, 0.7 + Math.sin(t * 4) * 0.08);
+    ring.current.material.color.setHSL(0.57, 1, 0.68 + Math.sin(t * 3) * 0.06);
 
     // Beam: from the lens down to the bottom of the image, one swath wide on the ground.
     const lensY = root.current.position.y - 27 * s, groundY = L.stageH / 2 - L.imgTop - L.imgH;
-    const h = lensY - groundY, w = L.imgW * 0.16;
+    const h = lensY - groundY, w = L.beamW;
     beam.current.position.set(S.x, groundY + h / 2, -50);
     beam.current.scale.set(w, h, 1);
     beamMat.uniforms.uTop.value = Math.min(0.5, (9 * s) / w);
     beamMat.uniforms.uTime.value = t;
-    const on = L.p > 0.004 && L.p < 0.996 ? 1 : 0;
-    beamMat.uniforms.uOn.value += (on * (0.75 + Math.min(Math.abs(S.v) / 900, 0.35)) - beamMat.uniforms.uOn.value) * Math.min(1, dt * 6);
+    beamMat.uniforms.uOn.value += (L.on * (0.55 + Math.min(Math.abs(S.v) / 1200, 0.25)) - beamMat.uniforms.uOn.value) * Math.min(1, dt * 5);
   });
 
   return (
@@ -178,9 +177,9 @@ export default function SatelliteScene({ pass, active }) {
       style={{ pointerEvents: 'none' }}
     >
       <Env />
-      <hemisphereLight args={['#cfe9ff', '#2a1d5a', 0.9]} />
+      <hemisphereLight args={['#dfeeff', '#1a1d1f', 0.9]} />
       <directionalLight position={[-300, 400, 500]} intensity={2.4} color="#fff4e2" />
-      <directionalLight position={[400, -100, 200]} intensity={1.1} color="#8b7bff" />
+      <directionalLight position={[400, -100, 200]} intensity={0.9} color="#5cb8ff" />
       <Satellite pass={pass} />
     </Canvas>
   );

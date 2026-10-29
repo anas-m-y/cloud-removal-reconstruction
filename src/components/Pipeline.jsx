@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import { gsap, reducedMotion } from '../lib/motion.js';
 import { sampleURL } from '../lib/data.js';
+import { NAMES } from '../config.js';
 
 const MIX = [
   ['Sentinel-2, SEN12MS-CR spring', '5,920 paired patches with Sentinel-1', 35],
@@ -12,7 +13,7 @@ const MIX = [
 function Node({ x, y, w, h, title, sub, cls = '', img, imgClass }) {
   return (
     <g className={`node ${cls}`} transform={`translate(${x},${y})`}>
-      <rect width={w} height={h} rx="6" />
+      <rect width={w} height={h} />
       <text x="14" y="28">{title}</text>
       {sub && sub.map((t, i) => <text key={i} className="sub" x="14" y={48 + i * 17}>{t}</text>)}
       {img && <image className={imgClass} href={img} x={w - 82} y={(h - 72) / 2} width="72" height="72" preserveAspectRatio="xMidYMid slice" />}
@@ -36,7 +37,7 @@ export default function Pipeline({ hero }) {
   }, []);
 
   return (
-    <section className="section" id="method" ref={ref}>
+    <section className="section field" id="method" ref={ref}>
       <div className="wrap">
         <div className="sec-head">
           <h2>How a scene is rebuilt</h2>
@@ -53,7 +54,7 @@ export default function Pipeline({ hero }) {
             <path className="wire" d="M950 180 C 975 180, 975 250, 1000 250" />
             <path className="wire" d="M405 210 C 405 300, 865 300, 865 212" strokeDasharray="5 5" />
             <Node x={16} y={22} w={240} h={96} cls="opt" title="Cloudy optical" sub={['red, green, blue', 'Sentinel-2 or Landsat']} img={sampleURL(hero.id, 'input')} />
-            <Node x={16} y={202} w={240} h={96} cls="sar" title="Sentinel-1 radar" sub={['VV and VH', 'optional']} img={sampleURL(hero.id, 'sar')} imgClass="radar-img" />
+            <Node x={16} y={202} w={240} h={96} cls="sar" title="Sentinel-1 radar" sub={['VV and VH', 'optional']} img={sampleURL(hero.id, 'sar_raw')} imgClass="radar-img" />
             <Node x={320} y={110} w={170} h={100} title="Encoder" sub={['5 channels in', '5 strided convs']} />
             <Node x={540} y={10} w={190} h={72} cls="cond" title="Satellite + radar flags" sub={['learned embeddings']} />
             <Node x={540} y={120} w={190} h={90} title="Bottleneck + FiLM" sub={['scale and shift', 'per channel']} />
@@ -71,7 +72,7 @@ export default function Pipeline({ hero }) {
           <li><strong>Judge and score</strong>A patch discriminator, L1, VGG perceptual and Gram losses train it; 16 dropout passes give a confidence map.</li>
         </ol>
         <div className="mix">
-          <div><h3>What v6 learned from</h3><p>8,000 fine-tuning steps from v5b on a T4 GPU, about 75 minutes. Radar was blanked on a quarter of real samples so the model also works without it.</p></div>
+          <div><h3>What {NAMES.v6} learned from</h3><p>8,000 fine-tuning steps from {NAMES.v5b} on a T4 GPU, about 75 minutes. Radar was blanked on a quarter of real samples so the model also works without it.</p></div>
           <div className="mix-rows">
             {MIX.map(([name, sub, pct]) => (
               <div className="mix-row" key={name}>

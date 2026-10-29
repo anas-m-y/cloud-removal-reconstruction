@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import Compare from './Compare.jsx';
-import { GlassButton } from '../bits/Glass.jsx';
+import Button from '../bits/Button.jsx';
 import ModelLoader from './ModelLoader.jsx';
 import { Seg, Switch } from './Controls.jsx';
 import { sampleURL } from '../lib/data.js';
@@ -39,7 +39,7 @@ export default function TryYourOwn({ hero }) {
   };
 
   return (
-    <section className="section" id="try">
+    <section className="section field" id="try">
       <div className="wrap">
         <div className="sec-head">
           <h2>Try your own image</h2>
@@ -65,10 +65,10 @@ export default function TryYourOwn({ hero }) {
                 <small>Runs the model on flipped copies and averages them. A little cleaner, and slower in proportion to the runs.</small></div>
               <div className="ctrl"><span>Match colours</span><Switch label="Match colours and keep clear pixels" checked={match} onChange={setMatch} />
                 <small>Guesses where the cloud was, matches the filled colour to the clear pixels around it, and keeps your original pixels everywhere else.</small></div>
-              <p className="notice">No radar comes with an uploaded picture, so v6 runs in its no-radar mode. Screenshots are not calibrated reflectance, so treat the result as approximate. True-colour images at 10 to 30 m per pixel work best.</p>
+              <p className="notice">No radar comes with an uploaded picture, so A7 runs in its no-radar mode. Screenshots are not calibrated reflectance, so treat the result as approximate. True-colour images at 10 to 30 m per pixel work best.</p>
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <GlassButton variant="primary" disabled={!src || busy} onClick={run}>{busy ? 'Reconstructing…' : 'Remove the clouds'}</GlassButton>
-                <GlassButton onClick={useSample}>Use a gallery scene</GlassButton>
+                <Button variant="primary" disabled={!src || busy} onClick={run}>{busy ? 'Reconstructing…' : 'Remove the clouds'}</Button>
+                <Button onClick={useSample}>Use a gallery scene</Button>
               </div>
               <ModelLoader />
               {err && <p className="err">{err}</p>}
@@ -77,7 +77,7 @@ export default function TryYourOwn({ hero }) {
           <div>
             {src && out ? (
               <>
-                <Compare left={src.url} right={out.url} leftLabel="Your image" rightLabel={`v6, no radar${out.passes > 1 ? `, ${out.passes} runs` : ''}${out.maskUrl ? ', colour matched' : ''}`} overlay={showMask && out.maskUrl ? out.maskUrl : null} overlayKind="mask" />
+                <Compare left={src.url} right={out.url} leftLabel="Your image" rightLabel={`A7, no radar${out.passes > 1 ? `, ${out.passes} runs` : ''}${out.maskUrl ? ', colour matched' : ''}`} overlay={showMask && out.maskUrl ? out.maskUrl : null} overlayKind="mask" />
                 <p className="viewer-note">Ran in <span className="num">{Math.round(out.ms)} ms</span> on {out.backend}{out.passes > 1 ? `, ${out.passes} runs averaged` : ''}{out.maskUrl ? `, colour matching ${Math.round(out.refineMs)} ms` : ''}. <a href={out.url} download="cloudless-result.png">Download the result</a></p>
                 {out.maskUrl && <div className="ctrl" style={{ marginTop: 8 }}><span>Show the estimated cloud mask</span><Switch label="Show the estimated cloud mask" checked={showMask} onChange={setShowMask} />
                   <small>This is a guess from where the model changed your picture, not a satellite product. Where it is wrong, a cloud edge can be left in or a clear patch repainted.</small></div>}
