@@ -1,133 +1,149 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import DecryptedText from '../bits/DecryptedText.jsx';
-import CountUp from '../bits/CountUp.jsx';
-import { GlassButton } from '../bits/Glass.jsx';
+import Button from '../bits/Button.jsx';
 import CanvasBoundary, { hasWebGL } from '../three/CanvasBoundary.jsx';
 import { gsap, ScrollTrigger, reducedMotion, scrollToId } from '../lib/motion.js';
 import { sampleURL } from '../lib/data.js';
-import { SITE } from '../config.js';
+import { SITE, NAMES } from '../config.js';
 
 const SatelliteScene = lazy(() => import('../three/SatelliteScene.jsx'));
 
-// Flat stand-in shown if WebGL is unavailable; it rides the same --scan variable.
-const SatIcon = () => (
-  <div className="sat-track"><svg className="sat-fallback" viewBox="0 0 120 48" aria-hidden="true">
-    <rect x="2" y="14" width="40" height="18" rx="2" fill="#1b2f7a" stroke="#cfd8ea" />
-    <rect x="78" y="14" width="40" height="18" rx="2" fill="#1b2f7a" stroke="#cfd8ea" />
-    <path d="M42 23h12M66 23h12" stroke="#cfd8ea" strokeWidth="2" />
-    <rect x="52" y="8" width="16" height="30" rx="2" fill="#c99a3c" />
-    <circle cx="60" cy="42" r="3" fill="#8ff3ff" />
-  </svg></div>
-);
+// The hero is the cloud. A wall of held-out cloudy scenes sits under a Sentinel-1 style satellite.
+// Scrolling flies the satellite across the wall: under its radar beam each tile turns to radar speckle,
+// and behind the beam the tile becomes the real reconstruction for that scene.
+//
+// One source of truth keeps the beam and the tiles in step: GSAP's scrub smooths scroll into `goal`,
+// a ticker eases `x` toward it, writes every tile's reveal, and the 3D scene reads the same `x`.
 
-// The one orchestrated moment: scrolling flies a radar satellite across the scene.
-// Its swath sweeps the image, and behind it v6's reconstruction replaces the cloud.
-export default function Hero({ hero }) {
-  const root = useRef(null), stage = useRef(null), frame = useRef(null), layer = useRef(null);
-  const pass = useRef({ p: 0, imgW: 0 });
-  const [done, setDone] = useState(false);
-  const [pct, setPct] = useState(0);
+const OUT = 'v6_p4_match';                 // the refined A7 output shipped for every gallery scene
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const FEATHER = 16;                         // px of soft edge on each reveal front (matches styles.css)
+
+export default function Hero({ gallery }) {
+  const root = useRef(null), pin = useRef(null), wall = useRef(null), layer = useRef(null);
+  const pass = useRef({ x: 0, on: 0, imgW: 0 });
   const [gl] = useState(hasWebGL);
   const [active, setActive] = useState(true);
-  const m = hero.metrics;
+  const [cleared, setCleared] = useState(0);
+  const ids = SITE.heroWall.filter((id) => gallery.samples.some((s) => s.id === id));
+  const byId = Object.fromEntries(gallery.samples.map((s) => [s.id, s]));
 
-  // Measure where the image sits inside the stage so the 3D scene can work in CSS pixels.
   useLayoutEffect(() => {
-    const s = layer.current, f = frame.current;
+    const L = pass.current, w = wall.current;
+    let tiles = [], tile = 0, band = 0, goal = 0, xStart = 0, xEnd = 0, lastCount = -1;
+
     const measure = () => {
-      const sb = s.getBoundingClientRect(), fb = f.getBoundingClientRect();
-      Object.assign(pass.current, { stageW: sb.width, stageH: sb.height, imgLeft: fb.left - sb.left, imgTop: fb.top - sb.top, imgW: fb.width, imgH: fb.height, laneH: fb.top - sb.top });
+      const lb = layer.current.getBoundingClientRect(), wb = w.getBoundingClientRect();
+      tiles = [...w.querySelectorAll('.tile')].filter((t) => t.offsetParent !== null).map((el) => ({ el, left: el.offsetLeft, size: el.offsetWidth }));
+      tile = tiles[0]?.size || 160;
+      const scale = tile / 170;                            // the satellite spans about one tile, wing tip to wing tip
+      band = tile * 0.42;                                  // half the width of the beam where it meets the ground
+      Object.assign(L, { stageW: lb.width, stageH: lb.height, imgLeft: wb.left - lb.left, imgTop: wb.top - lb.top, imgW: wb.width, imgH: wb.height,
+        laneH: wb.top - lb.top, scale, beamW: band * 2 });
+      // Desktop: parked just off the first column, beam off. Phone: waits off-screen and flies in with the scroll.
+      xStart = lb.width < 700 ? -(L.imgLeft + 110 * scale) : -band * 1.2;
+      xEnd = wb.width + (lb.right - wb.right) + 120 * scale; // flown clean out of the frame
     };
+
+    const paint = () => {
+      let count = 0;
+      for (const t of tiles) {
+        // Fronts run past the tile edge by the mask's feather, so a finished tile is fully opaque.
+        const o = clamp(L.x - band * 0.55 - t.left, 0, t.size + FEATHER), r = clamp(L.x + band - t.left, 0, t.size + FEATHER);
+        t.el.style.setProperty('--o', `${o}px`); t.el.style.setProperty('--r', `${r}px`);
+        if (o >= t.size + FEATHER - 0.5) count += 1;
+      }
+      L.on = L.x > -band && L.x < L.imgW + band ? 1 : 0;
+      if (count !== lastCount) { lastCount = count; setCleared(count); }
+    };
+
     measure();
-    const ro = new ResizeObserver(measure); ro.observe(s); ro.observe(f);
-    return () => ro.disconnect();
+    const ro = new ResizeObserver(() => { measure(); paint(); });
+    ro.observe(w); ro.observe(layer.current);
+
+    if (reducedMotion()) {                                // no flight: the wall is shown cleared, the satellite rests over it
+      L.x = L.imgW + band * 2; paint(); L.x = L.imgW / 2; L.on = 0;
+      return () => ro.disconnect();
+    }
+
+    L.x = xStart; goal = 0; paint();
+    const tick = (time, dtMs) => {                        // critically damped follow: no overshoot, no stepping
+      const target = xStart + goal * (xEnd - xStart);
+      const k = 1 - Math.exp(-(dtMs / 1000) * 9);
+      if (Math.abs(target - L.x) > 0.05) { L.x += (target - L.x) * k; paint(); }
+    };
+    gsap.ticker.add(tick);
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+      const drive = (opts) => {
+        const st = { v: 0 };
+        gsap.to(st, { v: 1, ease: 'none', scrollTrigger: { ...opts, scrub: 1, invalidateOnRefresh: true, onUpdate: (s) => { goal = s.progress; } } });
+      };
+      mm.add('(min-width: 861px)', () => drive({ trigger: root.current, start: 'top top', end: '+=140%', pin: pin.current, anticipatePin: 1 }));
+      mm.add('(max-width: 860px)', () => drive({ trigger: w, start: 'top 72%', end: 'bottom 22%' }));
+      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+      tl.from('.hero h1 .line', { yPercent: 40, opacity: 0, duration: 1.1, stagger: 0.08 })
+        .from('.hero-copy > *', { y: 20, opacity: 0, duration: 0.9, stagger: 0.07 }, 0.25)
+        .from('.tile', { y: 24, opacity: 0, duration: 0.9, stagger: { each: 0.035, from: 'start' } }, 0.2)
+        .from('.sat-layer', { opacity: 0, duration: 1.2, ease: 'power2.out' }, 0.6);
+    }, root);
+
+    return () => { gsap.ticker.remove(tick); ro.disconnect(); ctx.revert(); ScrollTrigger.refresh(); };
   }, []);
 
   // Stop rendering the satellite once the hero has scrolled away.
-  // (A scroll check rather than IntersectionObserver: the GSAP pin confuses observers in some browsers.)
   useEffect(() => {
     let raf = 0;
     const check = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => {
-      const b = stage.current?.getBoundingClientRect(); if (!b) return;
-      setActive(b.bottom > -150 && b.top < window.innerHeight + 150);
+      const b = root.current?.getBoundingClientRect(); if (!b) return;
+      setActive(b.bottom > -100 && b.top < window.innerHeight + 100);
     }); };
     check(); window.addEventListener('scroll', check, { passive: true }); window.addEventListener('resize', check);
     return () => { window.removeEventListener('scroll', check); window.removeEventListener('resize', check); cancelAnimationFrame(raf); };
   }, []);
 
-  useLayoutEffect(() => {
-    const el = stage.current;
-    const set = (p) => {
-      pass.current.p = p / 100;
-      el.style.setProperty('--scan', `${p}%`);
-      el.style.setProperty('--band', p < 0.5 || p > 99.5 ? 0 : 1);
-      setPct(Math.round(p)); setDone(p > 99);
-    };
-    if (reducedMotion()) { set(100); return undefined; }
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      const drive = (opts) => {
-        const st = { v: 0 };
-        gsap.to(st, { v: 100, ease: 'none', scrollTrigger: { ...opts, scrub: 0.6, onUpdate: (s) => set(s.progress * 100) } });
-      };
-      mm.add('(min-width: 861px)', () => drive({ trigger: root.current, start: 'top top', end: '+=150%', pin: root.current.querySelector('.hero-pin') }));
-      mm.add('(max-width: 860px)', () => drive({ trigger: frame.current, start: 'top 70%', end: 'bottom 20%' }));
-      gsap.from('.hero-copy > *', { opacity: 0, y: 22, duration: 1, stagger: 0.09, ease: 'power3.out', delay: 0.15 });
-      gsap.from('.scope', { opacity: 0, y: 30, scale: 0.97, duration: 1.2, ease: 'power3.out', delay: 0.25 });
-    }, root);
-    return () => { ctx.revert(); ScrollTrigger.refresh(); };
-  }, []);
-
+  const total = ids.length;
   return (
     <section className="hero" ref={root} id="top" aria-label="Introduction">
-      <div className="hero-pin">
-        <div className="wrap hero-grid">
-          <div className="hero-copy">
-            <p className="eyebrow"><i />SAR-optical fusion · Sentinel-1 + Sentinel-2 + Landsat</p>
-            <h1 className="wordmark">
-              <DecryptedText text={SITE.name} animateOn="view" sequential revealDirection="start" speed={55} useOriginalCharsOnly={false}
-                characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" encryptedClassName="dec-enc" />
-            </h1>
-            <p className="tagline">{SITE.tagline}</p>
-            <p className="fulltitle">{SITE.fullTitle}. A GAN that fuses Sentinel-1 radar with optical imagery to rebuild cloud-covered scenes from Sentinel-2 and Landsat 8/9.</p>
-            <div className="hero-actions">
-              <GlassButton variant="primary" onClick={() => scrollToId('playground')}>Open the playground<span aria-hidden="true" className="arr">→</span></GlassButton>
-              <GlassButton onClick={() => scrollToId('results')}>See the results</GlassButton>
+      <div className="hero-pin" ref={pin}>
+        <div className="wrap">
+          <h1><span className="line">See the ground</span> <span className="line">through any sky</span></h1>
+          <div className="hero-row">
+            <div className="hero-copy">
+              <p className="lead">A GAN that fuses Sentinel-1 radar with cloudy Sentinel-2 and Landsat images and rebuilds the ground underneath. It runs in your browser.</p>
+              <div className="hero-actions">
+                <Button variant="primary" onClick={() => scrollToId('playground')}>Open the playground</Button>
+                <Button onClick={() => scrollToId('results')}>See the results</Button>
+              </div>
+              <p className="hero-note" aria-live="polite">
+                {cleared === 0 ? `${total} held-out scenes the model never trained on. Scroll to fly the radar pass.`
+                  : cleared < total ? `Cleared ${cleared} of ${total}. Each tile is ${NAMES.v6}'s real output for that scene.`
+                    : `All ${total} cleared by ${NAMES.v6}. Pick any of them in the playground.`}
+              </p>
             </div>
-          </div>
-          <div className="scope">
-            <div className="scope-stage" ref={stage} style={{ '--scan': '0%', '--band': 0 }}>
-              <div className="orbit" aria-hidden="true" />
-              <div className="scope-glow" aria-hidden="true" />
-              <div className="scope-frame" ref={frame}>
-                <img src={sampleURL(hero.id, 'input')} alt={`Cloudy ${hero.sensor} image`} />
-                <img className="after" src={sampleURL(hero.id, 'v6')} alt="The same scene reconstructed by CLOUDLESS v6" />
-                <img className="radar-band" src={sampleURL(hero.id, 'sar')} alt="" aria-hidden="true" />
-                <div className="scope-grid" />
-                <div className="scan-edge" aria-hidden="true" />
-                <span className="frame-tag l" style={{ opacity: pct > 6 ? 1 : 0 }}>Cloudless v6</span>
-                <span className="frame-tag r" style={{ opacity: pct < 94 ? 1 : 0 }}>Cloudy input</span>
-                <i className="corner tl" /><i className="corner tr" /><i className="corner bl" /><i className="corner br" />
+            <div className="hero-stage">
+              <div className="wall" ref={wall}>
+                {ids.map((id) => {
+                  const s = byId[id];
+                  return (
+                    <figure className="tile" key={id}>
+                      <img src={sampleURL(id, 'input')} alt={`Cloudy ${s.sensor} scene, ${Math.round(s.cloud_fraction * 100)}% cloud`} />
+                      <img className="radar" src={sampleURL(id, 'sar_raw')} alt="" aria-hidden="true" />
+                      <img className="out" src={sampleURL(id, OUT)} alt="" aria-hidden="true" />
+                    </figure>
+                  );
+                })}
               </div>
               <div className="sat-layer" ref={layer} aria-hidden="true">
-                {gl ? (
-                  <CanvasBoundary fallback={<SatIcon />}>
+                {gl && (
+                  <CanvasBoundary fallback={null}>
                     <Suspense fallback={null}><SatelliteScene pass={pass} active={active} /></Suspense>
                   </CanvasBoundary>
-                ) : <SatIcon />}
+                )}
               </div>
             </div>
-            <dl className="telemetry" aria-live="polite">
-              <div><dt>Pass</dt><dd className="num">{pct}%</dd></div>
-              <div><dt>Cloud cover</dt><dd className="num">{Math.round(hero.cloud_fraction * 100)}%</dd></div>
-              <div><dt>PSNR vs clear image</dt><dd className="num">
-                {done ? <CountUp from={m.input.psnr} to={m.v6.psnr} decimals={1} duration={1.1} trigger="load" suffix=" dB" /> : `${m.input.psnr.toFixed(1)} dB`}
-              </dd></div>
-            </dl>
-            <div className="scope-legend"><span>{hero.source}</span><span className="r"><i />Sentinel-1 radar pass</span></div>
           </div>
         </div>
-        <div className="scroll-cue" aria-hidden="true">Scroll to fly the pass<i /></div>
       </div>
     </section>
   );

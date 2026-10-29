@@ -31,7 +31,7 @@ export function GroupedBars({ groups, series, max, unit, fmt = (v) => v.toFixed(
             <g key={g.label}>
               {series.map((s, si) => {
                 const v = g.values[s.key]; if (v == null) return null;
-                const x = x0 + si * (bw + 2), top = y(v), h = m.t + ih - top, r = Math.min(4, bw / 2, h);
+                const x = x0 + si * (bw + 2), top = y(v), h = m.t + ih - top, r = Math.min(2, bw / 2, h);
                 return (
                   <g key={s.key}>
                     <path d={`M${x},${m.t + ih} V${top + r} q0,-${r} ${r},-${r} H${x + bw - r} q${r},0 ${r},${r} V${m.t + ih} Z`} fill={s.color} opacity={s.alpha ?? 1} />
@@ -45,13 +45,13 @@ export function GroupedBars({ groups, series, max, unit, fmt = (v) => v.toFixed(
               <text className="cat" x={x0 + (gw - pad) / 2} y={H - m.b + 20} textAnchor="middle">{g.label}</text>
               {g.sub && <text className="lab" x={x0 + (gw - pad) / 2} y={H - m.b + 37} textAnchor="middle">{g.sub}</text>}
               {refLine && g.ref != null && (
-                <g><line x1={x0 - 4} x2={x0 + gw - pad + 4} y1={y(g.ref)} y2={y(g.ref)} stroke="#8a9cb4" strokeWidth="1.5" strokeDasharray="5 4" />
+                <g><line x1={x0 - 4} x2={x0 + gw - pad + 4} y1={y(g.ref)} y2={y(g.ref)} stroke="#9aa09c" strokeWidth="1.5" strokeDasharray="5 4" />
                   <text className="lab" x={x0 + gw - pad + 4} y={y(g.ref) - 6} textAnchor="end">{refLine} {fmt(g.ref)}</text></g>
               )}
             </g>
           );
         })}
-        <line x1={m.l} x2={W - m.r} y1={m.t + ih} y2={m.t + ih} stroke="#2a4a72" />
+        <line x1={m.l} x2={W - m.r} y1={m.t + ih} y2={m.t + ih} stroke="#3a4146" />
       </svg>
       <Tip tip={tip} />
     </div>
@@ -62,7 +62,7 @@ export function GroupedBars({ groups, series, max, unit, fmt = (v) => v.toFixed(
 export function DiffDots({ rows, color, unit = 'dB' }) {
   const [ref, W] = useWidth(); const [tip, setTip] = useState(null);
   const narrow = W < 560;
-  const m = { t: 30, r: 24, b: 34, l: narrow ? 130 : 230 }, rowH = 46, H = m.t + m.b + rows.length * rowH;
+  const m = { t: 30, r: narrow ? 46 : 24, b: 34, l: narrow ? 158 : 230 }, rowH = 46, H = m.t + m.b + rows.length * rowH;
   const lo = Math.min(-0.8, ...rows.map((r) => r.diff - 2 * r.se)), hi = Math.max(2.6, ...rows.map((r) => r.diff + 2 * r.se));
   const x = (v) => m.l + ((v - lo) / (hi - lo)) * (W - m.l - m.r);
   return (
@@ -71,7 +71,7 @@ export function DiffDots({ rows, color, unit = 'dB' }) {
         <g className="grid axis">{ticks(Math.ceil(lo * 2) / 2, Math.floor(hi * 2) / 2, Math.round((Math.floor(hi * 2) - Math.ceil(lo * 2)) / 1)).filter((_, i, a) => a.length < 9 || i % 2 === 0).map((t) => (
           <g key={t}><line x1={x(t)} x2={x(t)} y1={m.t - 8} y2={H - m.b} /><text x={x(t)} y={H - m.b + 18} textAnchor="middle">{t > 0 ? '+' : ''}{t.toFixed(1)}</text></g>
         ))}</g>
-        <line x1={x(0)} x2={x(0)} y1={m.t - 12} y2={H - m.b} stroke="#dce6f2" strokeWidth="1.5" />
+        <line x1={x(0)} x2={x(0)} y1={m.t - 12} y2={H - m.b} stroke="#edeeea" strokeWidth="1.5" />
         <text className="lab" x={x(0) + 6} y={m.t - 14}>no effect</text>
         {rows.map((r, i) => {
           const cy = m.t + i * rowH + rowH / 2;
@@ -79,7 +79,7 @@ export function DiffDots({ rows, color, unit = 'dB' }) {
             <g key={r.label}>
               <text className="cat" x={m.l - 14} y={cy + 5} textAnchor="end">{r.label}</text>
               <line x1={x(r.diff - 1.96 * r.se)} x2={x(r.diff + 1.96 * r.se)} y1={cy} y2={cy} stroke={color} strokeWidth="2" strokeLinecap="round" />
-              <circle cx={x(r.diff)} cy={cy} r="6" fill={color} stroke="#0a1828" strokeWidth="2" />
+              <circle cx={x(r.diff)} cy={cy} r="6" fill={color} stroke="#0c0e0f" strokeWidth="2" />
               <text className="val" x={x(r.diff + 1.96 * r.se) + 8} y={cy + 4}>{r.diff > 0 ? '+' : ''}{r.diff.toFixed(2)}</text>
               <rect className="hit" x={m.l} y={cy - rowH / 2} width={W - m.l - m.r} height={rowH}
                 onPointerEnter={() => setTip({ x: x(r.diff), y: cy - 8, content: <><b>{r.label}</b><br />Correct flag better by <span className="num">{r.diff.toFixed(2)} ± {(1.96 * r.se).toFixed(2)} {unit}</span><br />Correct flag wins in <span className="num">{Math.round(r.win * 100)}%</span> of scenes</> })}

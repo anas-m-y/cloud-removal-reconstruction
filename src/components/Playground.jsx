@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import Compare from './Compare.jsx';
-import { GlassButton } from '../bits/Glass.jsx';
+import Button from '../bits/Button.jsx';
 import CountUp from '../bits/CountUp.jsx';
 import ModelLoader from './ModelLoader.jsx';
 import { Seg, Switch } from './Controls.jsx';
@@ -74,10 +74,10 @@ export default function Playground({ gallery }) {
     setBusy(false);
   };
 
-  const modelName = isV6 ? `v6${radar ? '' : ', no radar'}${flag === 'swapped' ? ', swapped flag' : ''}${passes > 1 ? `, ${passes}-run average` : ''}${match ? ', colour matched' : ''}` : 'v5b';
+  const modelName = isV6 ? `A7${radar ? '' : ', no radar'}${flag === 'swapped' ? ', swapped flag' : ''}${passes > 1 ? `, ${passes}-run average` : ''}${match ? ', colour matched' : ''}` : 'A6';
   const leftURL = against === 'input' ? sampleURL(id, 'input') : sampleURL(id, 'target');
   const leftLabel = against === 'input' ? 'Cloudy input' : 'Clear image, other date';
-  const ov = overlay === 'conf' ? sampleURL(id, 'conf') : overlay === 'mask' ? sampleURL(id, 'mask') : overlay === 'sar' ? sampleURL(id, 'sar') : null;
+  const ov = overlay === 'conf' ? sampleURL(id, 'conf') : overlay === 'mask' ? sampleURL(id, 'mask') : overlay === 'sar' ? sampleURL(id, 'sar_raw') : null;
   const d = view && view.out != null ? view.out - view.inp : null;
 
   return (
@@ -85,7 +85,7 @@ export default function Playground({ gallery }) {
       <div className="wrap">
         <div className="sec-head">
           <h2>Playground</h2>
-          <p>Twenty-four held-out scenes the model never trained on. They were picked at evenly spaced ranks of v6's improvement, so weak results are here alongside strong ones. Switch the model, take away the radar, give it the wrong satellite flag, and watch the numbers.</p>
+          <p>Twenty-four held-out scenes the model never trained on. They were picked at evenly spaced ranks of A7's improvement, so weak results are here alongside strong ones. Switch the model, take away the radar, give it the wrong satellite flag, and watch the numbers.</p>
         </div>
 
         <div className="pg-filters" role="group" aria-label="Filter by source">
@@ -103,11 +103,11 @@ export default function Playground({ gallery }) {
           <div className="viewer">
             {view?.outURL
               ? <Compare left={leftURL} right={view.outURL} leftLabel={leftLabel} rightLabel={liveRes ? `${modelName}, live` : modelName} overlay={ov} overlayKind={overlay} />
-              : <div className="empty"><div><p>This combination was not precomputed.</p><GlassButton variant="primary" onClick={runLive} disabled={busy}>Run it live on this device</GlassButton></div></div>}
+              : <div className="empty"><div><p>This combination was not precomputed.</p><Button variant="primary" onClick={runLive} disabled={busy}>Run it live on this device</Button></div></div>}
             <p className="viewer-note">
               {overlay === 'conf' && 'Brighter means the model was less certain: the spread of 16 passes with dropout switched on. '}
               {overlay === 'mask' && 'Highlighted pixels are flagged as cloud by the satellite\'s own mask. '}
-              {overlay === 'sar' && 'Sentinel-1 radar for the same place, shown in amber. '}
+              {overlay === 'sar' && 'Sentinel-1 radar for the same place, shown in grey. '}
               {against === 'target' && 'The clear image was taken on a different date, so some differences are real change on the ground.'}
             </p>
           </div>
@@ -115,9 +115,9 @@ export default function Playground({ gallery }) {
           <div className="console">
             <section aria-label="Model controls">
               <h3>Model</h3>
-              <div className="ctrl"><span>Generator</span><Seg label="Generator" value={model} onChange={setModel} options={[['v6', 'v6'], ['v5b', 'v5b']]} /></div>
+              <div className="ctrl"><span>Generator</span><Seg label="Generator" value={model} onChange={setModel} options={[['v6', 'A7'], ['v5b', 'A6']]} /></div>
               <div className="ctrl"><span>Radar input</span><Switch label="Radar input" radar checked={isV6 ? radar : true} onChange={setRadar} disabled={!isV6} />
-                {!isV6 && <small>v5b always uses radar and has no flags.</small>}</div>
+                {!isV6 && <small>A6 always uses radar and has no flags.</small>}</div>
               <div className="ctrl"><span>Satellite flag</span><Seg label="Satellite flag" value={flag} onChange={setFlag} disabled={!isV6} options={[['correct', 'Correct'], ['swapped', 'Swapped']]} /></div>
               <div className="ctrl"><span>Keep clear pixels</span><Switch label="Keep clear pixels" checked={keep && canKeep} onChange={setKeep} disabled={!canKeep} />
                 <small>{canKeep ? 'Only replace pixels the cloud mask flags; the rest stay as captured.' : 'No cloud mask exists for this source.'}</small></div>
@@ -136,7 +136,7 @@ export default function Playground({ gallery }) {
             <section aria-label="About this scene">
               <div className="meta">
                 <span><b>{s.source}</b>{s.scene ? `, scene ${s.scene}` : ''}</span>
-                <span>{Math.round(s.cloud_fraction * 100)}% cloud. Picked at the {pct(s.rank_quantile)} percentile of v6's gain.</span>
+                <span>{Math.round(s.cloud_fraction * 100)}% cloud. Picked at the {pct(s.rank_quantile)} percentile of A7's gain.</span>
               </div>
             </section>
           </div>
@@ -154,11 +154,11 @@ export default function Playground({ gallery }) {
               <p className="viewer-note" style={{ marginTop: 12, fontSize: 13 }}>The clear image is from another date, so one scene can swing a dB or two either way. The composite test under Results is the fair comparison.{isV6 && match && ' Colour matching follows the clear pixels of the cloudy picture itself, not the other date, so this score can drop even when the result looks closer to what the satellite saw.'}</p>
             </section>
             <section aria-label="Run live">
-              <GlassButton onClick={runLive} disabled={!isV6 || busy}>{busy ? 'Running…' : liveRes ? 'Run again on this device' : 'Run v6 live on this device'}</GlassButton>
+              <Button onClick={runLive} disabled={!isV6 || busy}>{busy ? 'Running…' : liveRes ? 'Run again on this device' : 'Run A7 live on this device'}</Button>
               {busy && <ModelLoader compact />}
               {liveRes && <p className="live-out">Ran in <b className="num">{Math.round(liveRes.ms)} ms</b> on {liveRes.backend}.
                 {liveRes.diff != null && <> Differs from the precomputed image by <b className="num">{liveRes.diff.toFixed(2)}</b> grey levels out of 255 on average.</>}</p>}
-              {!isV6 && <p className="live-out">Only v6 runs in the browser.</p>}
+              {!isV6 && <p className="live-out">Only A7 runs in the browser.</p>}
               {liveErr && <p className="err">{liveErr}</p>}
             </section>
           </div>
